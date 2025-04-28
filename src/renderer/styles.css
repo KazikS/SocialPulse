@@ -1,0 +1,232 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+}
+
+header {
+  background-color: #4caf50;
+  padding: 15px;
+  color: white;
+  text-align: center;
+}
+
+nav {
+  margin-top: 10px;
+}
+
+nav button {
+  margin: 5px;
+  padding: 10px 20px;
+  background: white;
+  color: #4caf50;
+  border: 2px solid #4caf50;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+nav button:hover {
+  background-color: #45a049;
+  color: white;
+}
+
+main {
+  padding: 20px;
+}
+
+.tab {
+  display: none;
+}
+
+.tab.active {
+  display: block;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+input[type="text"],
+input[type="date"] {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.buttons button {
+  padding: 10px;
+  flex: 1;
+  font-size: 16px;
+}
+
+#postList {
+  list-style-type: none;
+  padding: 0;
+}
+
+#postList li {
+  background: white;
+  margin: 5px 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+canvas {
+  margin-top: 20px;
+}
+
+.telegram-auth-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, sans-serif;
+}
+
+.telegram-auth-container {
+  background: #fff;
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  width: 340px;
+  text-align: center;
+}
+
+.telegram-auth-step {
+  display: none;
+}
+
+.telegram-auth-step.active {
+  display: block;
+}
+
+.telegram-input {
+  width: 100%;
+  padding: 12px 16px;
+  margin: 16px 0;
+  border: 1px solid #e1e3e6;
+  border-radius: 8px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.telegram-input:focus {
+  border-color: #2ea6ff;
+  outline: none;
+}
+
+.telegram-button {
+  background: #2ea6ff;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.2s;
+}
+
+.telegram-button:hover {
+  background: #1c8ad9;
+}
+
+.telegram-button:active {
+  background: #1674b9;
+}
+
+.hidden {
+  display: none;
+}
+.auth-container {
+  max-width: 300px;
+  margin: 20px auto;
+  border: 1px solid #e7e8ec;
+  border-radius: 12px;
+  padding: 20px;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.auth-step {
+  display: none;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.auth-step.active {
+  display: flex;
+}
+
+.auth-container input {
+  padding: 10px 15px;
+  border: 1px solid #e7e8ec;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.auth-container button {
+  background: #0088cc;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.auth-container button:hover {
+  background: #0077b3;
+}
+
+.telegram-user-profile {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.telegram-user-profile img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.auth-step {
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.auth-step.active {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}

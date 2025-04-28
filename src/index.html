@@ -3,15 +3,106 @@
   <head>
     <meta charset="UTF-8" />
     <title>Hello World!</title>
-    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="./renderer/styles.css" />
   </head>
   <body>
-    <h1>💖 Hello World!</h1>
-    <p>Welcome to your Electron application.</p>
+    <header>
+      <h1>SocialPulse</h1>
+      <nav>
+        <button onclick="showTab('vk')">VK</button>
+        <button onclick="showTab('telegram')">Telegram</button>
+        <button onclick="showTab('ok')">Одноклассники</button>
+        <button onclick="showTab('web')">Веб-скрейпинг</button>
+      </nav>
+    </header>
 
-    <label for="vk-link">
-      <input type="text" id="vk-link">
-    </label>
+    <main>
+      <section id="vkTab" class="tab active">
+        <h2>Анализ ВКонтакте</h2>
+        <div class="form">
+          <input
+            type="text"
+            id="groupUrl"
+            placeholder="Введите ссылку на группу ВК"
+            value="https://vk.com/kompechat15"
+          />
+          <input type="date" id="dateFrom" value="2025-01-01" />
+          <input type="date" id="dateTo" value="2025-01-31" />
+          <div class="buttons">
+            <button id="startAnalysis">Старт анализа</button>
+            <button id="cancelBtn">Отмена</button>
+          </div>
+        </div>
 
+        <div id="statsBlock">
+          <h3>Результаты анализа</h3>
+        </div>
+      </section>
+
+      <section id="telegramTab" class="tab hidden">
+        <h2>Анализ Telegram</h2>
+
+        <!-- Контейнер авторизации -->
+        <div id="telegramAuthContainer" class="auth-container hidden">
+          <div class="auth-step active" id="phoneStep">
+            <input type="text" id="tgPhone" placeholder="+7 999 123 45 67" />
+            <button class="phoneStepBtn">Далее</button>
+          </div>
+
+          <div class="auth-step" id="codeStep">
+            <input type="text" id="tgCode" placeholder="Код из Telegram" />
+            <button class="codeStepBtn">Подтвердить</button>
+          </div>
+
+          <div class="auth-step" id="passwordStep">
+            <input type="password" id="tgPassword" placeholder="Пароль 2FA" />
+            <button class="passwordStepBtn">Войти</button>
+          </div>
+        </div>
+
+        <!-- Контент после авторизации -->
+        <div id="telegramAuthedContent" class="hidden">
+          <div class="telegram-user-profile">
+            <img
+              id="telegramUserAvatar"
+              src="./renderer/default_avatar.png"
+              alt="Аватар"
+            />
+            <span id="telegramUserName"></span>
+          </div>
+
+          <div class="form">
+            <input
+              type="text"
+              id="telegramUrl"
+              placeholder="Введите ссылку на канал"
+            />
+            <input type="date" id="telegramDateFrom" />
+            <input type="date" id="telegramDateTo" />
+            <div class="buttons">
+              <button id="startTelegramAnalysis">Старт анализа</button>
+              <button id="cancelTelegramAnalysis">Отмена</button>
+            </div>
+          </div>
+
+          <div id="telegramStatsBlock"></div>
+        </div>
+      </section>
+
+      <section id="okTab" class="tab hidden">
+        <h2>Анализ Одноклассников</h2>
+        <p>Раздел в разработке...</p>
+      </section>
+
+      <section id="webTab" class="tab hidden">
+        <h2>Веб-скрейпинг сайтов</h2>
+        <p>Раздел в разработке...</p>
+      </section>
+    </main>
+
+    <div id="loadingOverlay" class="hidden">
+      <div class="spinner"></div>
+    </div>
+    <script src="./renderer/renderer.js"></script>
   </body>
 </html>
