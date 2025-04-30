@@ -4,8 +4,19 @@ function showTab(tabName) {
   tabs.forEach((tab) => tab.classList.remove("active"));
   document.getElementById(tabName + "Tab").classList.add("active");
 
-  if (tabName === 'telegram') checkTelegramAuth();
+  if (tabName === "telegram") {
+    window.electron.send("startTelegramAuth"); // запускаем авторизацию
+  }
 }
+
+window.electron.on("authSuccess", () => {
+  alert("✅ Telegram авторизация успешна!");
+  // можешь скрыть блоки ввода или показать данные
+});
+
+window.electron.on("authError", (event, message) => {
+  alert("❌ Ошибка авторизации: " + message);
+});
 
 // VK - Старт анализа
 async function startVkAnalysis() {
@@ -71,6 +82,62 @@ async function loadStatistics(from, to) {
 }
 
 //TG
+document.getElementById("startAuth").addEventListener("click", () => {
+  showStatus("Начинается авторизация в Telegram...");
+  window.electron.send("startTelegramAuth");
+});
+
+document.getElementById("sendPhone").addEventListener("click", () => {
+  const phone = document.getElementById("phone").value;
+  window.electron.send("phoneNumber", phone);
+  console.log('send phone number')
+});
+
+document.getElementById("sendCode").addEventListener("click", () => {
+  const code = document.getElementById("code").value;
+  window.electron.send("phoneCode", code);
+});
+
+document.getElementById("sendPassword").addEventListener("click", () => {
+  const password = document.getElementById("password").value;
+  window.electron.send("password", password);
+});
+
+// Эти события тебе пригодятся, чтобы показывать следующие шаги:
+window.electron.on("askCode", () => {
+  document.getElementById("codeBlock").style.display = "block";
+});
+
+window.electron.on("askPassword", () => {
+  document.getElementById("passwordBlock").style.display = "block";
+});
+
+window.electron.on("askNumber", () => {
+  
+})
+
+function showStatus(msg) {
+  document.getElementById("statusMessage").innerText = msg;
+  document.getElementById("errorMessage").innerText = "";
+  document.getElementById("successMessage").innerText = "";
+}
+
+function showError(msg) {
+  document.getElementById("statusMessage").innerText = "";
+  document.getElementById("errorMessage").innerText = msg;
+  document.getElementById("successMessage").innerText = "";
+}
+
+function showSuccess(msg) {
+  document.getElementById("statusMessage").innerText = "";
+  document.getElementById("errorMessage").innerText = "";
+  document.getElementById("successMessage").innerText = msg;
+}
+
+window.electron.on("authSuccess", () => {
+  showSuccess("Вы уже авторизованы.");
+  document.getElementById("authBlock").classList.add("hidden");
+});
 
 // Навешиваем слушатели
 window.onload = () => {
@@ -83,3 +150,5 @@ window.onload = () => {
     .getElementById("cancelBtn")
     .addEventListener("click", cancelVkAnalysis);
 };
+
+//non commercial use for webstorm

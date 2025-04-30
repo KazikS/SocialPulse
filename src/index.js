@@ -1,18 +1,13 @@
 require("dotenv").config();
-
 const { app, BrowserWindow, ipcMain } = require("electron");
-
 const {
   getVkGroupID,
   getVkPosts,
   analyzeVkPosts,
   cancelRequest,
 } = require("./services/vk");
-
 const path = require("node:path");
-
-const { createClient } = require("./services/tg");
-
+const fs = require("fs");
 const {
   initDB,
   insertOrUpdatePost,
@@ -20,25 +15,32 @@ const {
   deletePostsByIds,
   getStatistics,
 } = require("./db/db");
+const {getClient} = require('./services/tg');
 
-initDB();
+
+
+initDB(); 
 
 if (require("electron-squirrel-startup")) {
   app.quit();
 }
 
+let win;
+let client = getClient().client;
 
 const createWindow = () => {
-  const mainWindow = new BrowserWindow({
+  win = new BrowserWindow({
     width: 1000,
     height: 1000,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
+      nodeIntegration: false,
+      contextIsolation: true,
     },
   });
 
-  mainWindow.loadFile(path.join(__dirname, "index.html"));
-  mainWindow.webContents.openDevTools();
+  win.loadFile(path.join(__dirname, "index.html"));
+  win.webContents.openDevTools();
 };
 
 app.whenReady().then(() => {
@@ -121,3 +123,64 @@ ipcMain.handle("db:get-statistics", async (event, { from, to }) => {
 });
 
 //TG
+let phonePromiseResolve;
+let codePromiseResolve;
+let passwordPromiseResolve;
+
+ipcMain.on("phoneNumber", (event, phone) => {
+  if (phonePromiseResolve) {
+    phonePromiseResolve(phone);
+  }
+});
+
+ipcMain.on("phoneCode", (event, code) => {
+  if (codePromiseResolve) {
+    codePromiseResolve(code);
+  }
+});
+
+ipcMain.on("password", (event, password) => {
+  if (passwordPromiseResolve) {
+    passwordPromiseResolve(password);
+  }
+});
+
+ipcMain.on("startTelegramAuth", async () => {
+  try {
+    await client.start({
+      phoneNumber: async () => {
+        return new Promise((resolve) => {
+          phonePromiseResolve = resolve;
+        });
+      },
+      phoneCode: async () => {
+        win.webContents.send("askCode");
+        return new Promise((resolve) => {
+          codePromiseResolve = resolve;
+        });
+      },
+      password: async () => {
+        win.webContents.send("askPassword");
+        return new Promise((resolve) => {
+          passwordPromiseResolve = resolve;
+        });
+      },
+      onError: (err) => {
+        console.error("Auth error:", err);
+        win.webContents.send("authError", err.message || "Unknown error");
+      },
+    });
+
+    console.log("Telegram connected.");
+    fs.writeFileSync(getClient().SESSION_FILE, client.session.save(), "utf-8");
+    await client.sendMessage("me", { message: "Hello from Electron UI!" });
+
+    win.webContents.send("authSuccess"); // уведомление об успешной авторизации
+  } catch (err) {
+    console.error("Telegram auth failed:", err);
+    win.webContents.send(
+      "authError",
+      err.message || "Unknown error during login"
+    );
+  }
+});

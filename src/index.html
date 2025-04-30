@@ -40,53 +40,51 @@
       </section>
 
       <section id="telegramTab" class="tab hidden">
-        <h2>Анализ Telegram</h2>
 
-        <!-- Контейнер авторизации -->
-        <div id="telegramAuthContainer" class="auth-container hidden">
-          <div class="auth-step active" id="phoneStep">
-            <input type="text" id="tgPhone" placeholder="+7 999 123 45 67" />
-            <button class="phoneStepBtn">Далее</button>
-          </div>
+        <div id="authBlock">
+          <button id="startAuth">Войти в Telegram</button>
+          <h1>Telegram Login</h1>
+          <div id="login">
+            <input type="text" id="phone" placeholder="Phone number" />
+            <button id="sendPhone">Send Phone</button>
 
-          <div class="auth-step" id="codeStep">
-            <input type="text" id="tgCode" placeholder="Код из Telegram" />
-            <button class="codeStepBtn">Подтвердить</button>
-          </div>
+            <div id="codeBlock" style="display: none">
+              <input type="text" id="code" placeholder="SMS Code" />
+              <button id="sendCode">Send Code</button>
+            </div>
 
-          <div class="auth-step" id="passwordStep">
-            <input type="password" id="tgPassword" placeholder="Пароль 2FA" />
-            <button class="passwordStepBtn">Войти</button>
-          </div>
-        </div>
-
-        <!-- Контент после авторизации -->
-        <div id="telegramAuthedContent" class="hidden">
-          <div class="telegram-user-profile">
-            <img
-              id="telegramUserAvatar"
-              src="./renderer/default_avatar.png"
-              alt="Аватар"
-            />
-            <span id="telegramUserName"></span>
-          </div>
-
-          <div class="form">
-            <input
-              type="text"
-              id="telegramUrl"
-              placeholder="Введите ссылку на канал"
-            />
-            <input type="date" id="telegramDateFrom" />
-            <input type="date" id="telegramDateTo" />
-            <div class="buttons">
-              <button id="startTelegramAnalysis">Старт анализа</button>
-              <button id="cancelTelegramAnalysis">Отмена</button>
+            <div id="passwordBlock" style="display: none">
+              <input
+                type="text"
+                id="password"
+                placeholder="Password (if 2FA enabled)"
+              />
+              <button id="sendPassword">Send Password</button>
             </div>
           </div>
 
-          <div id="telegramStatsBlock"></div>
+          <div id="statusMessage" style="margin-top: 1em; color: blue"></div>
+          <div id="errorMessage" style="margin-top: 1em; color: red"></div>
+          <div id="successMessage" style="margin-top: 1em; color: green"></div>
         </div>
+
+        <div id="analyzeBlockTg">
+          <div class="form">
+            <input
+              type="text"
+              id="groupUrl"
+              placeholder="Введите ссылку на группу ВК"
+              value="https://t.me/kompechat"
+            />
+            <input type="date" id="dateFrom" value="2025-01-01" />
+            <input type="date" id="dateTo" value="2025-01-31" />
+            <div class="buttons">
+              <button id="startAnalysisTG">Старт анализа</button>
+              <button id="cancelBtnTG">Отмена</button>
+            </div>
+          </div>
+        </div>
+
       </section>
 
       <section id="okTab" class="tab hidden">

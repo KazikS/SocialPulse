@@ -24,7 +24,7 @@ async function run() {
   await client.connect(); // This assumes you have already authenticated with .start()
 
   const result = await client.invoke(new Api.account.GetPassword({}));
-  console.log(result); // prints the result
+  console.log(result.currentAlgo.salt1 + "\n" + result.currentAlgo.salt2); // prints the result
 }
 
 auth().then(run);
