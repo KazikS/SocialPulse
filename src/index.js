@@ -14,12 +14,16 @@ const {
   getPosts,
   deletePostsByIds,
   getStatistics,
+  getChannelIdByExternalId
 } = require("./db/db");
-const {getClient} = require('./services/tg');
+const {
+  getClient,
+  getChannelInfo,
+  getTgPosts,
+  analyzeTgPosts,
+} = require("./services/tg");
 
-
-
-initDB(); 
+initDB();
 
 if (require("electron-squirrel-startup")) {
   app.quit();
@@ -116,9 +120,15 @@ ipcMain.handle("db:delete-posts", async (event, ids) => {
   deletePostsByIds(ids);
 });
 
-ipcMain.handle("db:get-statistics", async (event, { from, to }) => {
+ipcMain.handle("db:get-statistics", async (event, { from, to, channelId }) => {
   return new Promise((resolve) => {
-    getStatistics(from, to, (stats) => resolve(stats));
+    getStatistics(from, to, channelId, (stats) => resolve(stats));
+  });
+});
+
+ipcMain.handle("db:get-channel-id", async (event, externalId) => {
+  return new Promise((resolve) => {
+    getChannelIdByExternalId(externalId.toString(), (id) => resolve(id));
   });
 });
 
@@ -183,4 +193,60 @@ ipcMain.on("startTelegramAuth", async () => {
       err.message || "Unknown error during login"
     );
   }
+});
+
+ipcMain.handle("tg:getChannelInfo", async (event, url) => {
+  const meta = await getChannelInfo(url);
+  console.log(JSON.stringify(meta, null, 2));
+  return meta;
+});
+
+ipcMain.handle(
+  "tg:getTgPosts",
+  async (
+    event,
+    { channelid, channelHash, dateFromTG, dateToTG, title, link }
+  ) => {
+    const posts = await getTgPosts(
+      channelid,
+      channelHash,
+      dateFromTG,
+      dateToTG
+    );
+
+    const channelInfo = {
+      platform: "tg",
+      external_id: channelid.toString(),
+      title,
+      link,
+    };
+
+    for (const post of posts) {
+      let totalPostTgLikes = 0;
+      if (post.reactions) {
+        post.reactions.results.forEach((element) => {
+          totalPostTgLikes += element.count;
+        });
+      }
+      insertOrUpdatePost(
+        {
+          id: `tg_${channelid}_${post.id}`,
+          text: post.message || "",
+          date: new Date(post.date * 1000).toISOString(),
+          views: post.views || 0,
+          likes: totalPostTgLikes || 0,
+          comments: 0,
+          reposts: 0,
+        },
+        "tg",
+        channelInfo
+      );
+    }
+
+    return posts;
+  }
+);
+
+ipcMain.handle("tg:analyze", async (event, posts) => {
+  return analyzeTgPosts(posts);
 });

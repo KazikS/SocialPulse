@@ -45,10 +45,12 @@ async function startVkAnalysis() {
       await window.electron.invoke("vk:analyze", posts);
 
     console.log(
-      `Лайки: ${totalLikes}, Комментарии: ${totalComments}, Просмотры: ${totalViews}`
+      `Лайки: ${totalLikes}, Комментарии: ${totalComments}, Просмотры: ${totalViews}, id канала ${
+        meta.id
+      }, тип id канала ${typeof meta.id}`
     );
-
-    await loadStatistics(dateFrom, dateTo);
+    console.log(meta.id + "\n" + typeof meta.id);
+    await loadStatistics(dateFrom, dateTo, parseInt(meta.id), "vk");
   } catch (err) {
     console.error("Ошибка VK анализа:", err);
     alert("Что-то пошло не так при анализе VK");
@@ -61,21 +63,52 @@ function cancelVkAnalysis() {
 }
 
 // Рендер статистики (для ВК и позже для Телеграма)
-async function loadStatistics(from, to) {
+async function loadStatistics(from, to, externalChannelId, platform) {
   try {
+    const channelId = await window.electron.invoke(
+      "db:get-channel-id",
+      externalChannelId
+    );
+    if (!channelId) {
+      console.warn("Не найден внутренний channel_id для", externalChannelId);
+      return;
+    }
+
+    const fromDate = new Date(from);
+    fromDate.setHours(0, 0, 0, 0);
+
+    const toDate = new Date(to);
+    toDate.setHours(23, 59, 59, 999);
+
     const stats = await window.electron.invoke("db:get-statistics", {
-      from,
-      to,
+      from: fromDate.toISOString(),
+      to: toDate.toISOString(),
+      channelId,
     });
 
-    const statsBlock = document.getElementById("statsBlock");
-    statsBlock.innerHTML = `
-      <h3>Анализ данных</h3>
-      <p>❤️ Лайков: ${stats.totalLikes}</p>
-      <p>💬 Комментариев: ${stats.totalComments}</p>
-      <p>👁️ Просмотров: ${stats.totalViews}</p>
-      <p>🔁 Репостов: ${stats.totalReposts}</p>
-    `;
+    let statsBlock = null;
+    switch (platform) {
+      case "vk":
+        statsBlock = document.getElementById("statsBlock");
+        statsBlock.innerHTML = `
+          <h3>Анализ данных</h3>
+          <p>📰 Постов: ${stats.totalPosts}</p>
+          <p>❤️ Лайков: ${stats.totalLikes}</p>
+          <p>💬 Комментариев: ${stats.totalComments}</p>
+          <p>👁️ Просмотров: ${stats.totalViews}</p>
+          <p>🔁 Репостов: ${stats.totalReposts}</p>
+        `;
+        break;
+      case "tg":
+        statsBlock = document.getElementById("statsTgBlock");
+        statsBlock.innerHTML = `
+          <h3>Анализ данных</h3>
+          <p>📰 Постов: ${stats.totalPosts}</p>
+          <p>❤️ Лайков: ${stats.totalLikes}</p>
+          <p>👁️ Просмотров: ${stats.totalViews}</p>
+        `;
+        break;
+    }
   } catch (err) {
     console.error("Ошибка загрузки статистики:", err);
   }
@@ -90,7 +123,7 @@ document.getElementById("startAuth").addEventListener("click", () => {
 document.getElementById("sendPhone").addEventListener("click", () => {
   const phone = document.getElementById("phone").value;
   window.electron.send("phoneNumber", phone);
-  console.log('send phone number')
+  console.log("send phone number");
 });
 
 document.getElementById("sendCode").addEventListener("click", () => {
@@ -112,9 +145,7 @@ window.electron.on("askPassword", () => {
   document.getElementById("passwordBlock").style.display = "block";
 });
 
-window.electron.on("askNumber", () => {
-  
-})
+window.electron.on("askNumber", () => {});
 
 function showStatus(msg) {
   document.getElementById("statusMessage").innerText = msg;
@@ -139,6 +170,42 @@ window.electron.on("authSuccess", () => {
   document.getElementById("authBlock").classList.add("hidden");
 });
 
+async function startTgAnslysis() {
+  const url = document.getElementById("channelUrl").value;
+  const dateFrom = document.getElementById("dateFromTG").value;
+  const dateTo = document.getElementById("dateToTG").value;
+
+  if (!url || !dateFrom || !dateTo) {
+    return alert(
+      "Возможно вы не ввели ссылку на группу или не установили даты"
+    );
+  }
+
+  try {
+    const info = await window.electron.invoke("tg:getChannelInfo", url);
+    console.log(info.channelid, info.channelHash, info.channelTitle, info.url);
+    const posts = await window.electron.invoke("tg:getTgPosts", {
+      channelid: info.channelid,
+      channelHash: info.channelHash,
+      dateFromTG: dateFrom,
+      dateToTG: dateTo,
+      title: info.channelTitle,
+      link: info.url,
+    });
+
+    const { totalLikes, totalViews } = await window.electron.invoke(
+      "tg:analyze",
+      posts
+    );
+    console.log(
+      `Channel id = ${info.channelid}, typeof id ${typeof info.channelid}`
+    );
+    await loadStatistics(dateFrom, dateTo, parseInt(info.channelid), "tg");
+  } catch (error) {
+    console.error(`Error: ${error}`);
+  }
+}
+
 // Навешиваем слушатели
 window.onload = () => {
   showTab("vk");
@@ -149,6 +216,7 @@ window.onload = () => {
   document
     .getElementById("cancelBtn")
     .addEventListener("click", cancelVkAnalysis);
+  document
+    .getElementById("startAnalysisTG")
+    .addEventListener("click", startTgAnslysis);
 };
-
-//non commercial use for webstorm

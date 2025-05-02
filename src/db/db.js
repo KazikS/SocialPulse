@@ -70,10 +70,10 @@ function ensureChannel({ platform, external_id, title, link }, callback) {
 }
 
 function insertOrUpdatePost(post, sourceName, channelInfo) {
-    ensureSource(sourceName, (source_id) => {
-      ensureChannel(channelInfo, (channel_id) => {
-        db.run(
-          `INSERT INTO posts (id, source_id, channel_id, text, date, views, likes, comments, reposts)
+  ensureSource(sourceName, (source_id) => {
+    ensureChannel(channelInfo, (channel_id) => {
+      db.run(
+        `INSERT INTO posts (id, source_id, channel_id, text, date, views, likes, comments, reposts)
            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
            ON CONFLICT(id) DO UPDATE SET
              source_id = excluded.source_id,
@@ -84,22 +84,21 @@ function insertOrUpdatePost(post, sourceName, channelInfo) {
              likes = excluded.likes,
              comments = excluded.comments,
              reposts = excluded.reposts`,
-          [
-            post.id,
-            source_id,
-            channel_id,
-            post.text,
-            post.date,
-            post.views || 0,
-            post.likes || 0,
-            post.comments || 0,
-            post.reposts || 0,
-          ]
-        );
-      });
+        [
+          post.id,
+          source_id,
+          channel_id,
+          post.text,
+          post.date,
+          post.views || 0,
+          post.likes || 0,
+          post.comments || 0,
+          post.reposts || 0,
+        ]
+      );
     });
-  }
-  
+  });
+}
 
 function getPosts(from, to, callback) {
   db.run(
@@ -121,31 +120,62 @@ function deletePostsByIds(ids = []) {
   db.run(`DELETE FROM posts WHERE id IN (${placeholders})`, ids);
 }
 
-function getStatistics(from, to, callback) {
-    db.get(
-      `SELECT 
-        SUM(likes) AS totalLikes,
-        SUM(comments) AS totalComments,
-        SUM(views) AS totalViews,
-        SUM(reposts) AS totalReposts
-       FROM posts
-       WHERE date BETWEEN ? AND ?`,
-      [from, to],
-      (err, row) => {
-        if (err) {
-          console.error("Ошибка при подсчете статистики:", err.message);
-          callback({ totalLikes: 0, totalComments: 0, totalViews: 0, totalReposts: 0 });
-        } else {
-          callback(row || { totalLikes: 0, totalComments: 0, totalViews: 0, totalReposts: 0 });
-        }
+function getStatistics(from, to, channelId, callback) {
+  db.get(
+    `SELECT 
+      COUNT(*) AS totalPosts,
+      SUM(likes) AS totalLikes,
+      SUM(comments) AS totalComments,
+      SUM(views) AS totalViews,
+      SUM(reposts) AS totalReposts
+     FROM posts
+     WHERE date BETWEEN ? AND ? AND channel_id = ?`,
+    [from, to, channelId],
+    (err, row) => {
+      if (err) {
+        console.error("Ошибка при подсчете статистики:", err.message);
+        callback({
+          totalPosts: 0,
+          totalLikes: 0,
+          totalComments: 0,
+          totalViews: 0,
+          totalReposts: 0,
+        });
+      } else {
+        callback(
+          row || {
+            totalPosts: 0,
+            totalLikes: 0,
+            totalComments: 0,
+            totalViews: 0,
+            totalReposts: 0,
+          }
+        );
       }
-    );
-  }  
+    }
+  );
+}
+
+function getChannelIdByExternalId(external_id, callback) {
+  db.get(
+    `SELECT id FROM channels WHERE external_id = ?`,
+    [external_id],
+    (err, row) => {
+      if (err) {
+        console.error("Ошибка при получении channel_id:", err.message);
+        callback(null);
+      } else {
+        callback(row?.id || null);
+      }
+    }
+  );
+}
 
 module.exports = {
   initDB,
   insertOrUpdatePost,
   getPosts,
   deletePostsByIds,
-  getStatistics
+  getStatistics,
+  getChannelIdByExternalId
 };

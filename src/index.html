@@ -40,7 +40,6 @@
       </section>
 
       <section id="telegramTab" class="tab hidden">
-
         <div id="authBlock">
           <button id="startAuth">Войти в Telegram</button>
           <h1>Telegram Login</h1>
@@ -72,19 +71,22 @@
           <div class="form">
             <input
               type="text"
-              id="groupUrl"
+              id="channelUrl"
               placeholder="Введите ссылку на группу ВК"
               value="https://t.me/kompechat"
             />
-            <input type="date" id="dateFrom" value="2025-01-01" />
-            <input type="date" id="dateTo" value="2025-01-31" />
+            <input type="date" id="dateFromTG" value="2025-01-01" />
+            <input type="date" id="dateToTG" value="2025-01-31" />
             <div class="buttons">
               <button id="startAnalysisTG">Старт анализа</button>
               <button id="cancelBtnTG">Отмена</button>
             </div>
           </div>
-        </div>
 
+          <div id="statsTgBlock">
+            <h3>Результаты анализа</h3>
+          </div>
+        </div>
       </section>
 
       <section id="okTab" class="tab hidden">
