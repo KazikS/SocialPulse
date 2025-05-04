@@ -11,7 +11,6 @@
       <nav>
         <button onclick="showTab('vk')">VK</button>
         <button onclick="showTab('telegram')">Telegram</button>
-        <button onclick="showTab('ok')">Одноклассники</button>
         <button onclick="showTab('web')">Веб-скрейпинг</button>
       </nav>
     </header>
@@ -89,14 +88,32 @@
         </div>
       </section>
 
-      <section id="okTab" class="tab hidden">
-        <h2>Анализ Одноклассников</h2>
-        <p>Раздел в разработке...</p>
-      </section>
-
       <section id="webTab" class="tab hidden">
         <h2>Веб-скрейпинг сайтов</h2>
-        <p>Раздел в разработке...</p>
+        <div class="form">
+          <input
+            type="text"
+            id="urlInputWeb"
+            placeholder="https://archive.alania.gov.ru"
+            value="https://archive.alania.gov.ru/"
+          />
+          <input type="date" id="dateFromWeb" value="2025-01-01"/>
+          <input type="date" id="dateToWeb" value="2025-01-31"/>
+          <button id="startScrape">Начать сбор новостей</button>
+          <br />
+          <hr />
+          <br />
+          <div id="statsWebBlock"></div>
+        </div>
+        <br />
+        <input
+          type="text"
+          id="keywordInput"
+          placeholder="Введите ключевое слово"
+        />
+        <button id="searchKeywordBtn">Поиск</button>
+
+        <div id="keywordsResultWeb"></div>
       </section>
     </main>
 

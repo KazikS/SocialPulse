@@ -63,7 +63,7 @@ function cancelVkAnalysis() {
 }
 
 // Рендер статистики (для ВК и позже для Телеграма)
-async function loadStatistics(from, to, externalChannelId, platform) {
+async function loadStatistics(from, to, externalChannelId, platform, keyword) {
   try {
     const channelId = await window.electron.invoke(
       "db:get-channel-id",
@@ -107,6 +107,15 @@ async function loadStatistics(from, to, externalChannelId, platform) {
           <p>❤️ Лайков: ${stats.totalLikes}</p>
           <p>👁️ Просмотров: ${stats.totalViews}</p>
         `;
+        break;
+      case "web":
+        statsBlock = document.getElementById("statsWebBlock");
+        statsBlock.innerHTML = `
+          <h3>Анализ данных</h3>
+          <p>📰 Новостей в этом периоде: ${stats.totalPosts}</p>
+        `;
+        break;
+      default:
         break;
     }
   } catch (err) {
@@ -206,6 +215,31 @@ async function startTgAnslysis() {
   }
 }
 
+//web
+async function startWebScrapping() {
+  const url = document.getElementById("urlInputWeb").value;
+  const dateFrom = document.getElementById("dateFromWeb").value;
+  const dateTo = document.getElementById("dateToWeb").value;
+
+  if (!url || !dateFrom || !dateTo) {
+    return alert(
+      "Возможно вы не ввели ссылку на группу или не установили даты"
+    );
+  }
+  try {
+    const posts = await window.electron.invoke("web:scrape", {
+      url,
+      dateFromWeb: dateFrom,
+      dateToWeb: dateTo,
+    });
+    let external_id = new URL(posts[0].link).hostname;
+    await loadStatistics(dateFrom, dateTo, external_id, "web");
+    return posts;
+  } catch (error) {
+    console.error(`Error ${error}`);
+  }
+}
+
 // Навешиваем слушатели
 window.onload = () => {
   showTab("vk");
@@ -219,4 +253,7 @@ window.onload = () => {
   document
     .getElementById("startAnalysisTG")
     .addEventListener("click", startTgAnslysis);
+  document
+    .getElementById("startScrape")
+    .addEventListener("click", startWebScrapping);
 };

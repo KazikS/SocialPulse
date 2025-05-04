@@ -1,7 +1,5 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
-const dayjs = require("dayjs");
-const iconv = require("iconv-lite");
 
 function formatDate(dateStr) {
     const months = {
@@ -22,24 +20,6 @@ function formatDate(dateStr) {
     return Math.floor(Date.UTC(year, month, day) / 1000);
 }
 
-
-async function getSiteName(url) {
-    try {
-        const response = await axios.get(url, {timeout: 15000});
-        const $ = cheerio.load(response.data);
-        const title = $("h1.site-title")
-            .clone()
-            .children()
-            .remove()
-            .end()
-            .text()
-            .trim();
-        return title;
-    } catch (error) {
-        console.error(`Error ${error}`);
-    }
-}
-
 async function scrape(baseUrl, dateFrom, dateTo) {
     const startTimestamp = Math.floor(new Date(dateFrom).getTime() / 1000);
     const endTimestamp = Math.floor(new Date(dateTo).getTime() / 1000);
@@ -57,7 +37,6 @@ async function scrape(baseUrl, dateFrom, dateTo) {
             for (const post of posts) {
                 const $post = $(post);
                 const dateText = $post.find('.post__time').text();
-
                 const postTimestamp = formatDate(dateText);
                 if (!postTimestamp) continue;
                 if (postTimestamp > endTimestamp) continue;
@@ -82,10 +61,10 @@ async function scrape(baseUrl, dateFrom, dateTo) {
     } catch (error) {
         console.error('Error during scraping:', error.message);
     }
+    console.log("Длина массива постов " + result.length);
     return result;
 }
 
-module.exports = {
-    scrape,
-    getSiteName,
-};
+// Пример использования
+scrape('https://archive.alania.gov.ru/', '2025-01-01', '2025-01-31')
+    .then(data => console.log(''));
