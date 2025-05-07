@@ -2,30 +2,27 @@ const { TelegramClient, Api } = require("telegram");
 const { StringSession } = require("telegram/sessions");
 const fs = require("fs");
 const path = require("path");
-const { title } = require("process");
 
-const apiId = parseInt(process.env.TG_API_ID);
-const apiHash = process.env.TG_API_HASH;
+const apiId = process.env.TG_API_ID ||29974513;
+const apiHash = process.env.TG_API_HASH || "0f843f086acdbf04af970bf4ab305768";
 let savedSession = "";
-const SESSION_FILE = path.resolve(__dirname, "telegram.session");
-if (fs.existsSync(SESSION_FILE)) {
-  savedSession = fs.readFileSync(SESSION_FILE, "utf-8");
+let SESSION_FILE;
+function setSessionFilePath(app) {
+  SESSION_FILE = path.join(app.getPath("userData"), "telegram.session");
+  if (fs.existsSync(SESSION_FILE)) {
+    savedSession = fs.readFileSync(SESSION_FILE, "utf-8");
+  }
 }
+
 const stringSession = new StringSession(savedSession);
 
-const client = new TelegramClient(stringSession, apiId, apiHash, {
+const client = new TelegramClient(stringSession, parseInt(apiId), apiHash, {
   reconnectRetries: 5,
 });
 
-function delay(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
 function getClient() {
-  return {
-    client,
-    SESSION_FILE,
-  };
+  
+  return { client, SESSION_FILE };
 }
 
 function extractChannelUsername(url) {
@@ -103,6 +100,7 @@ async function getTgPosts(channelId, channelHash, dateFrom, dateTo) {
       }
     }
     const uniqueMessages = Array.from(uniqueMap.values());
+    console.log(uniqueMap.length);
     return uniqueMessages;
   } catch (error) {
     if (error.error_code === 420) {
@@ -127,21 +125,22 @@ function analyzeTgPosts(posts) {
   let totalLikes = 0;
   let totalViews = 0;
 
-  for (const post of posts){
-    if(post.reactions){
-      post.reactions.results.forEach(element => {
-        totalLikes += element.count
+  for (const post of posts) {
+    if (post.reactions) {
+      post.reactions.results.forEach((element) => {
+        totalLikes += element.count;
       });
     }
     totalViews += post.views;
   }
   console.log(totalLikes, totalViews);
-  return {totalLikes, totalViews}
+  return { totalLikes, totalViews };
 }
 
 module.exports = {
   getClient,
   getChannelInfo,
   getTgPosts,
-  analyzeTgPosts
+  analyzeTgPosts,
+  setSessionFilePath,
 };

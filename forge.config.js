@@ -9,7 +9,13 @@ module.exports = {
   makers: [
     {
       name: '@electron-forge/maker-squirrel',
-      config: {},
+      config: {
+        name: "SocialPulse",
+        
+        setupExe: "Setup.exe",
+        noMsi: true,
+        allowToChangeInstallationDirectory: true
+      },
     },
     {
       name: '@electron-forge/maker-zip',

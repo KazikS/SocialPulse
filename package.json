@@ -7,7 +7,7 @@
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
-    "make": "electron-forge make",
+    "make": "cross-env VK_SERVICE_KEY=9839bfe69839bfe69839bfe6569b1610a6998399839bfe6f03c77bc8185ce1e99724197 VK_API_VERSION=5.199 TG_API_ID=29974513 TG_API_HASH=0f843f086acdbf04af970bf4ab305768 electron-forge make",
     "publish": "electron-forge publish",
     "lint": "echo \"No linting configured\""
   },
@@ -39,6 +39,7 @@
     "@electron-forge/plugin-auto-unpack-natives": "^7.8.0",
     "@electron-forge/plugin-fuses": "^7.8.0",
     "@electron/fuses": "^1.8.0",
+    "cross-env": "^7.0.3",
     "electron": "35.2.0"
   }
 }

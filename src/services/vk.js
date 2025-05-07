@@ -2,7 +2,7 @@ require("dotenv").config();
 const { VK } = require("vk-io");
 
 const vk = new VK({
-  token: process.env.VK_SERVICE_KEY,
+  token: process.env.VK_SERVICE_KEY || '9839bfe69839bfe69839bfe6569b1610a6998399839bfe6f03c77bc8185ce1e99724197',
 });
 
 let canceledRequest = false;

@@ -1,125 +1,124 @@
 <!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
+<head>
+    <meta charset="UTF-8"/>
     <title>Hello World!</title>
-    <link rel="stylesheet" href="./renderer/styles.css" />
-  </head>
-  <body>
-    <header>
-      <h1>SocialPulse</h1>
-      <nav>
+    <link rel="stylesheet" href="./renderer/styles.css"/>
+</head>
+<body>
+<header>
+    <h1>SocialPulse</h1>
+    <nav>
         <button onclick="showTab('vk')">VK</button>
         <button onclick="showTab('telegram')">Telegram</button>
         <button onclick="showTab('web')">Веб-скрейпинг</button>
-      </nav>
-    </header>
+    </nav>
+</header>
 
-    <main>
-      <section id="vkTab" class="tab active">
+<main>
+    <section id="vkTab" class="tab active">
         <h2>Анализ ВКонтакте</h2>
         <div class="form">
-          <input
-            type="text"
-            id="groupUrl"
-            placeholder="Введите ссылку на группу ВК"
-            value="https://vk.com/kompechat15"
-          />
-          <input type="date" id="dateFrom" value="2025-01-01" />
-          <input type="date" id="dateTo" value="2025-01-31" />
-          <div class="buttons">
-            <button id="startAnalysis">Старт анализа</button>
-            <button id="cancelBtn">Отмена</button>
-          </div>
+            <input
+                    type="text"
+                    id="groupUrl"
+                    placeholder="Введите ссылку на группу ВК"
+                    value="https://vk.com/kompechat15"
+            />
+            <input type="date" id="dateFrom" value="2025-01-01"/>
+            <input type="date" id="dateTo" value="2025-01-31"/>
+            <div class="buttons">
+                <button id="startAnalysis">Старт анализа</button>
+                <button id="cancelBtn">Отмена</button>
+            </div>
         </div>
 
         <div id="statsBlock">
-          <h3>Результаты анализа</h3>
+            <h3>Результаты анализа</h3>
         </div>
-      </section>
+    </section>
 
-      <section id="telegramTab" class="tab hidden">
+    <section id="telegramTab" class="tab hidden">
         <div id="authBlock">
-          <button id="startAuth">Войти в Telegram</button>
-          <h1>Telegram Login</h1>
-          <div id="login">
-            <input type="text" id="phone" placeholder="Phone number" />
-            <button id="sendPhone">Send Phone</button>
+            <button id="startAuth">Войти в Telegram</button>
+            <h1>Telegram Login</h1>
+            <div id="login">
+                <input type="text" id="phone" placeholder="Phone number"/>
+                <button id="sendPhone">Send Phone</button>
 
-            <div id="codeBlock" style="display: none">
-              <input type="text" id="code" placeholder="SMS Code" />
-              <button id="sendCode">Send Code</button>
+                <div id="codeBlock" style="display: none">
+                    <input type="text" id="code" placeholder="SMS Code"/>
+                    <button id="sendCode">Send Code</button>
+                </div>
+
+                <div id="passwordBlock" style="display: none">
+                    <input
+                            type="text"
+                            id="password"
+                            placeholder="Password (if 2FA enabled)"
+                    />
+                    <button id="sendPassword">Send Password</button>
+                </div>
             </div>
 
-            <div id="passwordBlock" style="display: none">
-              <input
-                type="text"
-                id="password"
-                placeholder="Password (if 2FA enabled)"
-              />
-              <button id="sendPassword">Send Password</button>
-            </div>
-          </div>
-
-          <div id="statusMessage" style="margin-top: 1em; color: blue"></div>
-          <div id="errorMessage" style="margin-top: 1em; color: red"></div>
-          <div id="successMessage" style="margin-top: 1em; color: green"></div>
+            <div id="statusMessage" style="margin-top: 1em; color: blue"></div>
+            <div id="errorMessage" style="margin-top: 1em; color: red"></div>
+            <div id="successMessage" style="margin-top: 1em; color: green"></div>
         </div>
 
         <div id="analyzeBlockTg">
-          <div class="form">
-            <input
-              type="text"
-              id="channelUrl"
-              placeholder="Введите ссылку на группу ВК"
-              value="https://t.me/kompechat"
-            />
-            <input type="date" id="dateFromTG" value="2025-01-01" />
-            <input type="date" id="dateToTG" value="2025-01-31" />
-            <div class="buttons">
-              <button id="startAnalysisTG">Старт анализа</button>
-              <button id="cancelBtnTG">Отмена</button>
+            <div class="form">
+                <input
+                        type="text"
+                        id="channelUrl"
+                        placeholder="Введите ссылку на группу ВК"
+                        value="https://t.me/kompechat"
+                />
+                <input type="date" id="dateFromTG" value="2025-01-01"/>
+                <input type="date" id="dateToTG" value="2025-01-31"/>
+                <div class="buttons">
+                    <button id="startAnalysisTG">Старт анализа</button>
+                    <button id="cancelBtnTG">Отмена</button>
+                </div>
             </div>
-          </div>
 
-          <div id="statsTgBlock">
-            <h3>Результаты анализа</h3>
-          </div>
+            <div id="statsTgBlock">
+                <h3>Результаты анализа</h3>
+            </div>
         </div>
-      </section>
+    </section>
 
-      <section id="webTab" class="tab hidden">
+    <section id="webTab" class="tab hidden">
         <h2>Веб-скрейпинг сайтов</h2>
         <div class="form">
-          <input
-            type="text"
-            id="urlInputWeb"
-            placeholder="https://archive.alania.gov.ru"
-            value="https://archive.alania.gov.ru/"
-          />
-          <input type="date" id="dateFromWeb" value="2025-01-01"/>
-          <input type="date" id="dateToWeb" value="2025-01-31"/>
-          <button id="startScrape">Начать сбор новостей</button>
-          <br />
-          <hr />
-          <br />
-          <div id="statsWebBlock"></div>
+            <input
+                    type="text"
+                    id="urlInputWeb"
+                    placeholder="https://archive.alania.gov.ru"
+                    value="https://archive.alania.gov.ru/"
+            />
+            <input type="date" id="dateFromWeb" value="2025-01-01"/>
+            <input type="date" id="dateToWeb" value="2025-01-31"/>
+            <input
+                    type="text"
+                    id="keywordInput"
+                    placeholder="Введите ключевые слова через пробел"
+                    value="видеоотчет акция владикавказ"
+            />
+            <div class="buttons">
+                <button id="startScrape">Начать сбор новостей</button>
+                <button id="searchKeywordBtn">Поиск</button>
+            </div>
+
+            <div id="statsWebBlock"></div>
+            <div id="keywordsResultWeb"></div>
         </div>
-        <br />
-        <input
-          type="text"
-          id="keywordInput"
-          placeholder="Введите ключевое слово"
-        />
-        <button id="searchKeywordBtn">Поиск</button>
+    </section>
+</main>
 
-        <div id="keywordsResultWeb"></div>
-      </section>
-    </main>
-
-    <div id="loadingOverlay" class="hidden">
-      <div class="spinner"></div>
-    </div>
-    <script src="./renderer/renderer.js"></script>
-  </body>
+<div id="loadingOverlay" class="hidden">
+    <div class="spinner"></div>
+</div>
+<script src="./renderer/renderer.js"></script>
+</body>
 </html>
