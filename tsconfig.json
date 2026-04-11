@@ -9,9 +9,12 @@
     "sourceMap": true,
     "baseUrl": ".",
     "outDir": "dist",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "ignoreDeprecations": "6.0",
     "resolveJsonModule": true,
     "jsx": "react-jsx",
+    "paths": {
+      "@/*": ["./src/renderer/*"]
+    }
   }
 }
