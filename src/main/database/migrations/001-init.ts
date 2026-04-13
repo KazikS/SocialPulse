@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS post_stats(
 id INTEGER PRIMARY KEY AUTOINCREMENT,
 post_id INTEGER,
 likes INTEGER,
+views INTEGER,
 reposts INTEGER,
 collected_at TEXT,
 FOREIGN KEY (post_id) REFERENCES posts(id));
@@ -43,6 +44,7 @@ CREATE TABLE IF NOT EXISTS post_comments(
 id INTEGER PRIMARY KEY AUTOINCREMENT,
 post_id INTEGER,
 author TEXT,
+author_link TEXT,
 text TEXT,
 published_at TEXT,
 FOREIGN KEY (post_id) REFERENCES posts(id));

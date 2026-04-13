@@ -4,7 +4,7 @@ import { getDatabase } from "../connection";
 export class BaseRepository<T> {
   constructor(protected tableName: string) {}
 
-  private get database() {
+  protected get database() {
     return getDatabase();
   }
 
@@ -28,5 +28,33 @@ export class BaseRepository<T> {
     const values = Object.values(data as Record<string, unknown>);
     const sql = `INSERT INTO ${this.tableName} (${keys.join(", ")}) VALUES (${keys.map(() => "?").join(", ")})`;
     return this.database.prepare(sql).run(...values);
+  }
+
+  /**
+   * Вставляет запись в указанную таблицу.
+   * Используется для работы со связанными таблицами (post_media, post_stats и т.д.)
+   *
+   * @param table — имя таблицы
+   * @param data — объект с полями для вставки
+   */
+  protected insertTo(table: string, data: Record<string, unknown>) {
+    const keys = Object.keys(data);
+    const values = Object.values(data);
+    const sql = `INSERT INTO ${table} (${keys.join(", ")}) VALUES (${keys.map(() => "?").join(", ")})`;
+    return this.database.prepare(sql).run(...values);
+  }
+
+  /**
+   * Получает все записи из таблицы по значению конкретного поля.
+   * Например: все медиа поста, все комментарии поста.
+   *
+   * @param table — имя таблицы
+   * @param field — имя поля для фильтрации
+   * @param value — значение для поиска
+   * @returns массив найденных записей типа R
+   */
+  protected getFrom<R>(table: string, field: string, value: unknown): R[] {
+    const sql = `SELECT * FROM ${table} WHERE ${field} = ?`;
+    return this.database.prepare(sql).all(value) as R[];
   }
 }
