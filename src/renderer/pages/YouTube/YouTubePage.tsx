@@ -1,7 +1,4 @@
 export const YouTubePage = () => {
-  const pingFn = async () => {
-    await window.electronAPI.ping();
-  };
   return (
     <div>
       YouTube
@@ -12,6 +9,14 @@ export const YouTubePage = () => {
         }}
       >
         Ping
+      </button>
+      <button
+        onClick={async () => {
+          const response = await window.electronAPI.test_db();
+          console.log(response);
+        }}
+      >
+        test_db
       </button>
     </div>
   );

@@ -3,6 +3,7 @@ import path from "node:path";
 import started from "electron-squirrel-startup";
 import "./ipc/test.ipc";
 import { initDatabase } from "./database/connection";
+import { createMigration } from "./database/migrations";
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -54,5 +55,6 @@ app.on("activate", () => {
 
 app.whenReady().then(() => {
   const db = initDatabase();
+  createMigration();
   console.log(`База данных подключена: ${JSON.stringify(db, null, 2)}`);
 });
