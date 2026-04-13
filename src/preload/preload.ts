@@ -1,6 +1,11 @@
 import { contextBridge, ipcRenderer } from "electron";
 
 contextBridge.exposeInMainWorld("electronAPI", {
-  ping: () => ipcRenderer.invoke("ping"),
-  test_db: () => ipcRenderer.invoke("test_db"),
+  platforms: {
+    getAll: () => ipcRenderer.invoke("platforms:getAll"),
+    create: (data: Record<string, unknown>) =>
+      ipcRenderer.invoke("platforms:create", data),
+    getById: (id: number) => ipcRenderer.invoke("platforms:getById", id),
+    deleteById: (id: number) => ipcRenderer.invoke("platforms:deleteById", id),
+  },
 });

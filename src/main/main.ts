@@ -1,9 +1,10 @@
 import { app, BrowserWindow, ipcMain } from "electron";
 import path from "node:path";
 import started from "electron-squirrel-startup";
-import "./ipc/test.ipc";
 import { initDatabase } from "./database/connection";
 import { createMigration } from "./database/migrations";
+
+import "./ipc";
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
