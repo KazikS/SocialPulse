@@ -25,7 +25,7 @@ export interface Source {
 export interface Post {
   id: number;
   source_id: number;
-  external_id: number;
+  external_id: string;
   text: string;
   published_at: string;
   created_at: string;

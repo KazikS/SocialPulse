@@ -1,2 +1,4 @@
-export * from "./db.ipc";
-export * from "./platforms.ipc";
+import "./db.ipc";
+import "./platforms.ipc";
+import "./post.ipc";
+import "./sources.ipc";

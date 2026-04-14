@@ -21,10 +21,9 @@ contextBridge.exposeInMainWorld("electronAPI", {
       ipcRenderer.invoke("posts:addComment", data),
     getComments: (postId: number) =>
       ipcRenderer.invoke("posts:getComments", postId),
-    getStats: (postId: number) =>
-      ipcRenderer.invoke("posts:getStats", postId),
-    addStats: (postId: number) =>
-      ipcRenderer.invoke("posts:addStats", postId),
+    getStats: (postId: number) => ipcRenderer.invoke("posts:getStats", postId),
+    addStats: (data: Record<string, unknown>) =>
+      ipcRenderer.invoke("posts:addStats", data),
   },
   sources: {
     getAll: () => ipcRenderer.invoke("sources:getAll"),
@@ -34,7 +33,10 @@ contextBridge.exposeInMainWorld("electronAPI", {
     deleteById: (id: number) => ipcRenderer.invoke("sources:deleteById", id),
     getStats: (sourceId: number) =>
       ipcRenderer.invoke("sources:getStats", sourceId),
-    addStats: (sourceId: number) =>
-      ipcRenderer.invoke("sources:addStats", sourceId),
+    addStats: (data: Record<string, unknown>) =>
+      ipcRenderer.invoke("sources:addStats", data),
+  },
+  db: {
+    test: () => ipcRenderer.invoke("db:test"),
   },
 });

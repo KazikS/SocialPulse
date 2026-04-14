@@ -37,6 +37,14 @@ export const YouTubePage = () => {
       >
         delete_by_id_1
       </button>
+      <button
+        onClick={async () => {
+          const response = await window.electronAPI.db.test();
+          console.log(response);
+        }}
+      >
+        show_all_db
+      </button>
     </div>
   );
 };

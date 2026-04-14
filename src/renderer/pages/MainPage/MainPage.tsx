@@ -1,4 +1,3 @@
-import { app } from "electron";
 import { useNavigate } from "react-router-dom";
 
 export const MainPage = () => {
@@ -26,7 +25,7 @@ export const MainPage = () => {
         <button
           type="button"
           onClick={() => {
-            navigate("/tg");
+            navigate("/telegram");
           }}
         >
           tg
