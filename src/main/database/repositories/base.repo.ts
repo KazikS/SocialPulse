@@ -8,6 +8,15 @@ export class BaseRepository<T> {
     return getDatabase();
   }
 
+  private buildInsert(data: Omit<T, "id">, modifier = "") {
+    const keys = Object.keys(data as Record<string, unknown>);
+    const values = Object.values(data as Record<string, unknown>);
+    return {
+      sql: `INSERT ${modifier} INTO ${this.tableName} (${keys.join(", ")}) VALUES (${keys.map(() => "?").join(", ")})`,
+      values,
+    };
+  }
+
   findAll(): T[] {
     const sql = `SELECT * FROM ${this.tableName}`;
     return this.database.prepare(sql).all() as T[];
@@ -24,9 +33,12 @@ export class BaseRepository<T> {
   }
 
   create(data: Omit<T, "id">) {
-    const keys = Object.keys(data as Record<string, unknown>);
-    const values = Object.values(data as Record<string, unknown>);
-    const sql = `INSERT INTO ${this.tableName} (${keys.join(", ")}) VALUES (${keys.map(() => "?").join(", ")})`;
+    const { sql, values } = this.buildInsert(data);
+    return this.database.prepare(sql).run(...values);
+  }
+
+  createOrIgnore(data: Omit<T, "id">) {
+    const { sql, values } = this.buildInsert(data, "OR IGNORE");
     return this.database.prepare(sql).run(...values);
   }
 

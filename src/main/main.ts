@@ -3,6 +3,7 @@ import path from "node:path";
 import started from "electron-squirrel-startup";
 import { initDatabase } from "./database/connection";
 import { createMigration } from "./database/migrations";
+import { createSeeds } from "./database/seeds";
 
 import "./ipc";
 
@@ -59,5 +60,6 @@ app.on("activate", () => {
 app.whenReady().then(() => {
   const db = initDatabase();
   createMigration();
+  createSeeds();
   console.log(`База данных подключена: ${JSON.stringify(db, null, 2)}`);
 });

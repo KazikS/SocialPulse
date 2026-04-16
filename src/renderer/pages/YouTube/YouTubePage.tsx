@@ -39,11 +39,12 @@ export const YouTubePage = () => {
       </button>
       <button
         onClick={async () => {
-          const response = await window.electronAPI.db.test();
+          const response = await window.electronAPI.platforms.getAll();
           console.log(response);
         }}
+        style={{color: "black"}}
       >
-        show_all_db
+        get_platforms
       </button>
     </div>
   );
