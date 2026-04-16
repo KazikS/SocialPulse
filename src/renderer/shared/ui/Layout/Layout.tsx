@@ -1,7 +1,8 @@
 import { ReactNode } from "react";
+import { Outlet, useMatches } from "react-router-dom";
+
 import styles from "./Layout.module.scss";
 import { LayoutHeader } from "./LayoutHeader";
-import { Outlet, useMatches } from "react-router-dom";
 import { LayoutNavBar } from "./LayoutNavBar";
 
 type RouteHandle = {

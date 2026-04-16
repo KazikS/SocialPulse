@@ -1,6 +1,7 @@
 import { PostRepository } from "@main/database/repositories";
-import { Post, PostComment, PostMedia, PostStats } from "@shared/types/entites";
+import { PostComment, PostMedia, PostStats } from "@shared/types/entites";
 import { ipcMain, IpcMainInvokeEvent } from "electron";
+
 import { registerCRUD } from "./lib/registerCRUD";
 
 let repo: PostRepository;

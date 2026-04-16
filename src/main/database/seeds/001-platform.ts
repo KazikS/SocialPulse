@@ -1,4 +1,5 @@
 import { Platform } from "@shared/types/entites";
+
 import { PlatformsRepository } from "../repositories";
 
 const basePlatforms: Omit<Platform, "id">[] = [

@@ -1,10 +1,11 @@
+import { createHashRouter, RouterProvider } from "react-router-dom";
+
 import { MainPage } from "@/pages/MainPage";
 import { TelegramPage } from "@/pages/Telegram";
 import { VkPage } from "@/pages/Vk";
 import { YouTubePage } from "@/pages/YouTube";
 import { routes } from "@/shared/routes";
 import { Layout } from "@/shared/ui/Layout";
-import { createHashRouter, RouterProvider } from "react-router-dom";
 
 const router = createHashRouter([
   {

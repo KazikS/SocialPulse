@@ -1,4 +1,3 @@
-import { Database } from "better-sqlite3";
 import { getDatabase } from "../connection";
 
 export class BaseRepository<T> {

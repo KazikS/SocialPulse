@@ -1,4 +1,3 @@
-import { Layout } from "@/shared/ui/Layout";
 import { useNavigate } from "react-router-dom";
 
 export const MainPage = () => {

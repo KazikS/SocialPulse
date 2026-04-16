@@ -5,6 +5,7 @@ import {
   PostMedia,
   PostStats,
 } from "@shared/types/entites";
+
 import { BaseRepository } from "./base.repo";
 
 export class PostRepository extends BaseRepository<Post> {

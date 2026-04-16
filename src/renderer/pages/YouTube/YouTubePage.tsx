@@ -42,7 +42,7 @@ export const YouTubePage = () => {
           const response = await window.electronAPI.platforms.getAll();
           console.log(response);
         }}
-        style={{color: "black"}}
+        style={{ color: "black" }}
       >
         get_platforms
       </button>

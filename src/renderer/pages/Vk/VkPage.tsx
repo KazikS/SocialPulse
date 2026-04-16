@@ -1,3 +1,3 @@
 export const VkPage = () => {
-    return <div>vk</div>
+  return <div>vk</div>;
 };

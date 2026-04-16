@@ -1,3 +1,3 @@
 export const TelegramPage = () => {
-    return <div>telegram</div>
+  return <div>telegram</div>;
 };

@@ -1,6 +1,7 @@
 import { SourcesRepository } from "@main/database/repositories";
-import { Source, SourceStats } from "@shared/types/entites";
+import { SourceStats } from "@shared/types/entites";
 import { ipcMain, IpcMainInvokeEvent } from "electron";
+
 import { registerCRUD } from "./lib/registerCRUD";
 
 let repo: SourcesRepository;

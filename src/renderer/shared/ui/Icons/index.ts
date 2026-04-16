@@ -4,7 +4,7 @@ export * from "./FeedIcon";
 export * from "./KeywordsIcon";
 export * from "./SearchIcon";
 export * from "./StatsIcon";
-export * from "./VkLogo";
 export * from "./TgLogo";
+export * from "./VkLogo";
 export * from "./WebIcon";
 export * from "./YouTubeIcon";

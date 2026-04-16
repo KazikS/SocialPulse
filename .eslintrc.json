@@ -6,11 +6,24 @@
   },
   "extends": [
     "eslint:recommended",
-    "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
+    "plugin:react-hooks/recommended",
     "plugin:import/recommended",
-    "plugin:import/electron",
-    "plugin:import/typescript"
+    "plugin:import/typescript",
+    "prettier"
   ],
   "parser": "@typescript-eslint/parser",
+  "settings": {
+    "import/resolver": {
+      "typescript": { "project": "./tsconfig.json" }
+    },
+    "react": { "version": "detect" }
+  },
+  "plugins": ["simple-import-sort"],
+  "rules": {
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error"
+  }
 }

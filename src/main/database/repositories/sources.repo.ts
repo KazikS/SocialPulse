@@ -1,4 +1,5 @@
 import { Source, SourceStats } from "@shared/types/entites";
+
 import { BaseRepository } from "./base.repo";
 
 export class SourcesRepository extends BaseRepository<Source> {

@@ -1,7 +1,8 @@
+import clsx from "clsx";
 import { Link, useLocation } from "react-router-dom";
+
 import { navItems } from "./config";
 import styles from "./LayoutNavBar.module.scss";
-import clsx from "clsx";
 
 export const LayoutNavBar = () => {
   const currentLocation = useLocation();
