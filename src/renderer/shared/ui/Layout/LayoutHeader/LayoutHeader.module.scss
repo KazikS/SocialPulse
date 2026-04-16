@@ -1,0 +1,20 @@
+@use "@/styles/variables" as *;
+
+.wrapper {
+  background-color: $bg-secondary;
+  display: flex;
+  padding: 16px 28px;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid $border;
+  height: 60px;
+}
+
+h1 {
+    font-size: 18px;
+}
+
+.subtitle {
+    margin-top: 8px;
+    font-size: 12px;
+}

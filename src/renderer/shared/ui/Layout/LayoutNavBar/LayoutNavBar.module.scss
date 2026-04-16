@@ -1,0 +1,79 @@
+@use "@/styles/variables" as *;
+
+.wrapper {
+  border: 1px solid $border;
+  height: 100vh;
+  background-color: $bg-secondary;
+  border-right: none;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border-bottom: 1px solid $border;
+  padding: 16px 28px;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+  height: 60px;
+}
+
+.logoIcon {
+  width: 32px;
+  height: 32px;
+}
+
+.secondPartLogoText {
+  color: $accent-blue;
+}
+
+.navList {
+  border-right: 1px solid $border;
+  height: 100%;
+}
+
+.sectionTitle {
+  padding: 16px;
+  h3 {
+    font-size: 10px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: $text-muted;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+}
+
+.navLinks {
+  display: flex;
+  flex-direction: column;
+}
+
+.navItem {
+  text-decoration: none;
+  color: $text-secondary;
+  font-size: 12px;
+  padding: 9px 12px;
+  transition: all 0.15s;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 10px;
+
+  &:hover {
+    color: $text-primary;
+    background: $bg-card;
+  }
+}
+
+.selectedNavItem {
+  background: rgba(59, 130, 246, 0.12);
+  color: $accent-blue;
+
+  &:hover {
+    color: $accent-blue;
+  }
+}

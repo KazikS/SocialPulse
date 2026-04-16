@@ -3,24 +3,30 @@ import { TelegramPage } from "@/pages/Telegram";
 import { VkPage } from "@/pages/Vk";
 import { YouTubePage } from "@/pages/YouTube";
 import { routes } from "@/shared/routes";
+import { Layout } from "@/shared/ui/Layout";
 import { createHashRouter, RouterProvider } from "react-router-dom";
 
 const router = createHashRouter([
   {
-    path: routes.home,
-    element: <MainPage />,
-  },
-  {
-    path: routes.youtube,
-    element: <YouTubePage />,
-  },
-  {
-    path: routes.vk,
-    element: <VkPage />,
-  },
-  {
-    path: routes.telegram,
-    element: <TelegramPage />,
+    element: <Layout />,
+    children: [
+      {
+        path: routes.home,
+        element: <MainPage />,
+        handle: { title: "Дашборд" },
+      },
+      {
+        path: routes.telegram,
+        element: <TelegramPage />,
+        handle: { title: "Телеграм" },
+      },
+      { path: routes.vk, element: <VkPage />, handle: { title: "ВК" } },
+      {
+        path: routes.youtube,
+        element: <YouTubePage />,
+        handle: { title: "YouTube" },
+      },
+    ],
   },
 ]);
 

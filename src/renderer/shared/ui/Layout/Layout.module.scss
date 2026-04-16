@@ -1,0 +1,27 @@
+@use "@/styles/variables" as *;
+
+.wrapper {
+  display: grid;
+  grid-template-columns: $sidebar-width 1fr;
+}
+
+.navbar {
+  width: 240px;
+}
+
+main {
+  background-color: $bg-primary;
+}
+
+.indicator {
+  width: 8px;
+  height: 8px;
+  background-color: $accent-green;
+  border-radius: 50%;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

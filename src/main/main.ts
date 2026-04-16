@@ -29,7 +29,9 @@ const createWindow = () => {
   }
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools({ mode: "bottom" });
+  mainWindow.maximize();
+  mainWindow.show();
 };
 
 // This method will be called when Electron has finished
