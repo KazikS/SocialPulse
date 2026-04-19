@@ -1,0 +1,20 @@
+@use "@/styles/variables" as *;
+
+.indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+
+.success {
+  background-color: $accent-green;
+}
+
+.disabled {
+  background-color: $text-secondary;
+}
+
+.error {
+  background-color: $accent-red;
+}

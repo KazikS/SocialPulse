@@ -54,7 +54,8 @@ id INTEGER PRIMARY KEY AUTOINCREMENT,
 source_id INTEGER,
 subscribers INTEGER,
 posts_count INTEGER,
-collected_at TEXT);
+collected_at TEXT,
+FOREIGN KEY (source_id) REFERENCES sources(id));
 `;
 
 export const createMigration = () => {

@@ -1,0 +1,17 @@
+@use "@/styles/variables" as *;
+
+.divider {
+  background-color: $border;
+}
+
+.horizontal {
+  height: 1px;
+  width: 100%;
+  margin: 10px 0;
+}
+
+.vertical {
+  width: 1px;
+  height: 100%;
+  margin: 0 10px;
+}

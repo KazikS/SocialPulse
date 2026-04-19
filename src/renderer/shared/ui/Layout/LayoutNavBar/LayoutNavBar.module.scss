@@ -2,9 +2,8 @@
 
 .wrapper {
   border: 1px solid $border;
-  height: 100vh;
+  min-height: 100vh;
   background-color: $bg-secondary;
-  border-right: none;
 }
 
 .logo {
@@ -27,11 +26,6 @@
 
 .secondPartLogoText {
   color: $accent-blue;
-}
-
-.navList {
-  border-right: 1px solid $border;
-  height: 100%;
 }
 
 .sectionTitle {

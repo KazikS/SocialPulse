@@ -1,17 +1,23 @@
-// export type ApiResponse<T> = {
-//   meta: {
-//     status: boolean;
-//     code: number;
-//     message: string;
-//   };
-//   data: T | null;
-// };
+export type ApiResponse<T> = {
+  meta: {
+    status: boolean;
+    code: number;
+    message: string;
+  };
+  data: T | null;
+};
+
+export type PlatformSlug = "vk" | "tg" | "yt" | "max";
 
 export interface Platform {
   id: number;
   name: string;
-  slug: string;
+  slug: PlatformSlug;
 }
+export type PlatformOverview = Platform & {
+  sourcesCount: number;
+  postsCount: number;
+};
 
 export interface Source {
   id: number;

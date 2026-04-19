@@ -19,6 +19,7 @@ declare global {
       create: (data: Omit<Platform, "id">) => Promise<unknown>;
       getById: (id: number) => Promise<Platform | undefined>;
       deleteById: (id: number) => Promise<unknown>;
+      getOverview: () => Promise<PlatformOverview[]>;
     };
     posts: {
       getAll: () => Promise<Post[]>;

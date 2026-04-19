@@ -2,6 +2,7 @@ export * from "./CompareIcon";
 export * from "./DashboardIcon";
 export * from "./FeedIcon";
 export * from "./KeywordsIcon";
+export * from "./MaxIcon";
 export * from "./SearchIcon";
 export * from "./StatsIcon";
 export * from "./TgLogo";

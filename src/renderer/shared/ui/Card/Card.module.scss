@@ -1,0 +1,9 @@
+@use "@/styles/variables" as *;
+
+.wrapper {
+  border-radius: 14px;
+  background-color: $bg-card;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}

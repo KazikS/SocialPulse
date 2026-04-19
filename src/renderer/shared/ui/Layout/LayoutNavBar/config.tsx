@@ -38,12 +38,12 @@ export const navItems = [
         icon: <VkLogo width={12} height={12} />,
       },
       {
-        path: routes.telegram,
+        path: routes.tg,
         title: "Telegram",
         icon: <TgLogo width={12} height={12} />,
       },
       {
-        path: routes.youtube,
+        path: routes.yt,
         title: "YouTube",
         icon: <YouTubeIcon width={12} height={12} />,
       },

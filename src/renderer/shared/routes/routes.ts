@@ -1,6 +1,7 @@
 export const routes = {
   home: "/",
-  youtube: "/youtube",
+  yt: "/youtube",
   vk: "/vk",
-  telegram: "/telegram",
-};
+  tg: "/telegram",
+  max: "/max",
+} as const;

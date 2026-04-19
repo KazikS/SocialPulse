@@ -1,6 +1,6 @@
 import { createHashRouter, RouterProvider } from "react-router-dom";
 
-import { MainPage } from "@/pages/MainPage";
+import { DashboardPage } from "@/pages/Dashboard";
 import { TelegramPage } from "@/pages/Telegram";
 import { VkPage } from "@/pages/Vk";
 import { YouTubePage } from "@/pages/YouTube";
@@ -13,17 +13,17 @@ const router = createHashRouter([
     children: [
       {
         path: routes.home,
-        element: <MainPage />,
+        element: <DashboardPage />,
         handle: { title: "Дашборд" },
       },
       {
-        path: routes.telegram,
+        path: routes.tg,
         element: <TelegramPage />,
         handle: { title: "Телеграм" },
       },
       { path: routes.vk, element: <VkPage />, handle: { title: "ВК" } },
       {
-        path: routes.youtube,
+        path: routes.yt,
         element: <YouTubePage />,
         handle: { title: "YouTube" },
       },

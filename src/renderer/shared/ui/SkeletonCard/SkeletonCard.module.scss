@@ -1,0 +1,14 @@
+@use "@/styles/variables" as *;
+
+.wrapper {
+  border-radius: 14px;
+  padding: 20px;
+  height: 150px;
+  background: linear-gradient(
+    90deg,
+    $bg-card 0%,
+    $bg-card-hover 50%,
+    $bg-card 100%
+  );
+  background-size: 200% 100%;
+}

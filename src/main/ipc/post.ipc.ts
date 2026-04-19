@@ -13,7 +13,7 @@ const getRepo = () => {
   return repo;
 };
 
-registerCRUD("posts", () => new PostRepository());
+registerCRUD("posts", getRepo);
 
 const handleAddMedia = (
   _event: IpcMainInvokeEvent,
@@ -21,24 +21,29 @@ const handleAddMedia = (
 ) => {
   return getRepo().addMedia(data);
 };
+
 const handleGetMedia = (_event: IpcMainInvokeEvent, postId: number) => {
   return getRepo().getMedia(postId);
 };
+
 const handleAddComment = (
   _event: IpcMainInvokeEvent,
   data: Omit<PostComment, "id">,
 ) => {
   return getRepo().addComment(data);
 };
+
 const handleGetComments = (_event: IpcMainInvokeEvent, postId: number) => {
   return getRepo().getComment(postId);
 };
+
 const handleAddStats = (
   _event: IpcMainInvokeEvent,
   data: Omit<PostStats, "id">,
 ) => {
   return getRepo().addStats(data);
 };
+
 const handleGetStats = (_event: IpcMainInvokeEvent, postId: number) => {
   return getRepo().getStats(postId);
 };

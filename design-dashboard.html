@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard Design — Full</title>
+<style>
+  :root {
+    --bg-primary: #0a0e1a;
+    --bg-secondary: #111827;
+    --bg-card: #1a2236;
+    --bg-card-hover: #1f2a42;
+    --border: #2a3550;
+    --text-primary: #e2e8f0;
+    --text-secondary: #8892a8;
+    --text-muted: #5a6580;
+    --accent-blue: #3b82f6;
+    --accent-cyan: #06b6d4;
+    --accent-violet: #8b5cf6;
+    --accent-green: #10b981;
+    --accent-orange: #f59e0b;
+    --accent-red: #ef4444;
+    --vk: #0077ff;
+    --tg: #26a5e4;
+    --yt: #ff0000;
+    --max: #7c3aed;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    padding: 32px;
+    min-height: 100vh;
+  }
+  .page-title { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+  .page-subtitle {
+    color: var(--text-secondary);
+    font-size: 13px;
+    margin-bottom: 28px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .live-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent-green);
+    box-shadow: 0 0 8px var(--accent-green);
+  }
+
+  /* SUMMARY STATS */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-label {
+    color: var(--text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .stat-value { font-size: 26px; font-weight: 600; }
+  .stat-delta { font-size: 12px; margin-top: 6px; }
+  .delta-up { color: var(--accent-green); }
+  .delta-down { color: var(--accent-red); }
+  .stat-spark {
+    position: absolute;
+    right: 12px; bottom: 10px;
+    width: 80px; height: 30px;
+    opacity: 0.6;
+  }
+
+  /* SECTION */
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  .section-title { font-size: 15px; font-weight: 600; }
+  .section-hint { color: var(--text-muted); font-size: 12px; }
+  .section-gap { margin-top: 28px; }
+
+  /* PLATFORMS */
+  .platforms-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .platform-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .platform-card:hover {
+    background: var(--bg-card-hover);
+    transform: translateY(-2px);
+    border-color: var(--accent-blue);
+  }
+  .platform-card.disabled { opacity: 0.5; cursor: not-allowed; }
+  .platform-card.disabled:hover { transform: none; border-color: var(--border); background: var(--bg-card); }
+  .platform-accent {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .platform-header {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 16px;
+  }
+  .platform-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .platform-icon svg { width: 22px; height: 22px; color: #fff; }
+  .platform-name { font-size: 15px; font-weight: 600; }
+  .platform-status {
+    font-size: 11px; color: var(--text-muted); margin-top: 2px;
+  }
+  .platform-status .dot {
+    display: inline-block;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent-green);
+    margin-right: 4px; vertical-align: middle;
+  }
+  .platform-status.inactive .dot { background: var(--text-muted); }
+  .platform-stats {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+  .platform-stat-value { font-size: 18px; font-weight: 600; }
+  .platform-stat-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-top: 2px;
+  }
+
+  /* CHARTS ROW 1 */
+  .chart-row-1 {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 16px;
+  }
+  .panel {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .chart-tabs {
+    display: flex; gap: 4px;
+  }
+  .chart-tab {
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 6px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    background: transparent;
+  }
+  .chart-tab.active {
+    background: var(--bg-card-hover);
+    color: var(--text-primary);
+  }
+
+  .legend {
+    display: flex; gap: 16px; margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px; color: var(--text-secondary);
+  }
+  .legend-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+  }
+
+  .donut-center {
+    text-align: center;
+    margin-top: -140px;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .donut-center-value { font-size: 24px; font-weight: 600; }
+  .donut-center-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+  .donut-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .donut-legend-row {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 13px;
+  }
+  .donut-legend-row .left {
+    display: flex; align-items: center; gap: 8px;
+  }
+  .donut-legend-row .value {
+    color: var(--text-secondary); font-variant-numeric: tabular-nums;
+  }
+  .donut-legend-row .pct {
+    color: var(--text-muted); margin-left: 8px; font-size: 12px;
+  }
+
+  /* CHARTS ROW 2 */
+  .chart-row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  /* TOP SOURCES */
+  .top-source {
+    display: grid;
+    grid-template-columns: 24px 1fr auto;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .top-source:last-child { border-bottom: none; }
+  .top-source-rank {
+    color: var(--text-muted);
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+  }
+  .top-source-body { min-width: 0; }
+  .top-source-name { font-size: 13px; margin-bottom: 4px; }
+  .top-source-bar-wrap {
+    height: 4px;
+    background: var(--bg-card-hover);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .top-source-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+    border-radius: 2px;
+  }
+  .top-source-value {
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* HEATMAP */
+  .heatmap-wrap {
+    display: grid;
+    grid-template-columns: 30px 1fr;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .heatmap-days {
+    display: flex; flex-direction: column;
+    justify-content: space-around;
+    font-size: 10px;
+    color: var(--text-muted);
+    padding: 2px 0;
+  }
+  .heatmap-grid {
+    display: grid;
+    grid-template-columns: repeat(24, 1fr);
+    grid-template-rows: repeat(7, 18px);
+    gap: 2px;
+  }
+  .heatmap-cell {
+    border-radius: 3px;
+    background: var(--bg-card-hover);
+  }
+  .heatmap-legend {
+    display: flex; align-items: center; gap: 6px;
+    justify-content: flex-end;
+    margin-top: 10px;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .heatmap-legend-cell {
+    width: 14px; height: 14px; border-radius: 3px;
+  }
+
+  /* FEED + KEYWORDS */
+  .chart-row-3 {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 16px;
+  }
+  .feed-item {
+    display: flex; gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .feed-item:last-child { border-bottom: none; }
+  .feed-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--bg-card-hover);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; color: var(--text-secondary);
+  }
+  .feed-body { flex: 1; min-width: 0; }
+  .feed-meta {
+    font-size: 11px; color: var(--text-muted); margin-bottom: 4px;
+  }
+  .feed-meta strong { color: var(--text-primary); font-weight: 500; }
+  .feed-text {
+    font-size: 13px; color: var(--text-secondary);
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  .feed-engagement {
+    display: flex; gap: 14px;
+    margin-top: 6px;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .keyword-tag {
+    display: inline-block;
+    background: var(--bg-card-hover);
+    border: 1px solid var(--border);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    margin: 4px 4px 4px 0;
+    color: var(--text-secondary);
+  }
+  .keyword-tag strong { color: var(--accent-cyan); margin-left: 6px; }
+  .keyword-tag.trending { border-color: var(--accent-orange); }
+  .keyword-tag.trending::before { content: "↑ "; color: var(--accent-orange); }
+</style>
+</head>
+<body>
+
+<div class="page-title">Дашборд</div>
+<div class="page-subtitle">
+  <span class="live-dot"></span>
+  Мониторинг активен · Обновлено 2 мин. назад
+</div>
+
+<!-- SUMMARY STATS (with sparklines) -->
+<div class="stats-row">
+  <div class="stat-card">
+    <div class="stat-label">Источники</div>
+    <div class="stat-value">24</div>
+    <div class="stat-delta delta-up">+3 за неделю</div>
+    <svg class="stat-spark" viewBox="0 0 80 30" preserveAspectRatio="none">
+      <polyline points="0,22 10,20 20,18 30,18 40,15 50,12 60,10 70,8 80,5"
+        fill="none" stroke="#10b981" stroke-width="2"/>
+    </svg>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Посты за сутки</div>
+    <div class="stat-value">1 247</div>
+    <div class="stat-delta delta-up">+12%</div>
+    <svg class="stat-spark" viewBox="0 0 80 30" preserveAspectRatio="none">
+      <polyline points="0,20 10,22 20,15 30,18 40,10 50,14 60,8 70,12 80,6"
+        fill="none" stroke="#3b82f6" stroke-width="2"/>
+    </svg>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Охват</div>
+    <div class="stat-value">842K</div>
+    <div class="stat-delta delta-down">−4%</div>
+    <svg class="stat-spark" viewBox="0 0 80 30" preserveAspectRatio="none">
+      <polyline points="0,10 10,8 20,12 30,15 40,14 50,18 60,20 70,22 80,24"
+        fill="none" stroke="#ef4444" stroke-width="2"/>
+    </svg>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Упоминания</div>
+    <div class="stat-value">156</div>
+    <div class="stat-delta delta-up">+8</div>
+    <svg class="stat-spark" viewBox="0 0 80 30" preserveAspectRatio="none">
+      <polyline points="0,25 10,23 20,20 30,21 40,17 50,15 60,12 70,14 80,8"
+        fill="none" stroke="#8b5cf6" stroke-width="2"/>
+    </svg>
+  </div>
+</div>
+
+<!-- PLATFORMS -->
+<div class="section-head">
+  <div class="section-title">Платформы</div>
+  <div class="section-hint">Нажми для перехода к источникам</div>
+</div>
+<div class="platforms-grid">
+  <div class="platform-card">
+    <div class="platform-accent" style="background: var(--vk);"></div>
+    <div class="platform-header">
+      <div class="platform-icon" style="background: var(--vk);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h2.4l3.6 8.5L12.6 7H15"/><path d="M15 7v5.5c0 2.5 1.5 3 3 3s3-.5 3-3V7"/></svg>
+      </div>
+      <div>
+        <div class="platform-name">ВКонтакте</div>
+        <div class="platform-status"><span class="dot"></span>Активна</div>
+      </div>
+    </div>
+    <div class="platform-stats">
+      <div><div class="platform-stat-value">8</div><div class="platform-stat-label">Источников</div></div>
+      <div><div class="platform-stat-value">432</div><div class="platform-stat-label">Постов</div></div>
+    </div>
+  </div>
+
+  <div class="platform-card">
+    <div class="platform-accent" style="background: var(--tg);"></div>
+    <div class="platform-header">
+      <div class="platform-icon" style="background: var(--tg);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 3L1 11l7 2.5"/><path d="M8 13.5L21 3"/><path d="M8 13.5v5l3.5-3"/><path d="M8 13.5l10 6.5"/></svg>
+      </div>
+      <div>
+        <div class="platform-name">Telegram</div>
+        <div class="platform-status"><span class="dot"></span>Активна</div>
+      </div>
+    </div>
+    <div class="platform-stats">
+      <div><div class="platform-stat-value">12</div><div class="platform-stat-label">Источников</div></div>
+      <div><div class="platform-stat-value">687</div><div class="platform-stat-label">Постов</div></div>
+    </div>
+  </div>
+
+  <div class="platform-card">
+    <div class="platform-accent" style="background: var(--yt);"></div>
+    <div class="platform-header">
+      <div class="platform-icon" style="background: var(--yt);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="4"/><polygon points="10,8.5 16,12 10,15.5" fill="currentColor"/></svg>
+      </div>
+      <div>
+        <div class="platform-name">YouTube</div>
+        <div class="platform-status"><span class="dot"></span>Активна</div>
+      </div>
+    </div>
+    <div class="platform-stats">
+      <div><div class="platform-stat-value">4</div><div class="platform-stat-label">Источников</div></div>
+      <div><div class="platform-stat-value">128</div><div class="platform-stat-label">Постов</div></div>
+    </div>
+  </div>
+
+  <div class="platform-card disabled">
+    <div class="platform-accent" style="background: var(--max);"></div>
+    <div class="platform-header">
+      <div class="platform-icon" style="background: var(--max);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 14l4-6 4 6"/></svg>
+      </div>
+      <div>
+        <div class="platform-name">MAX</div>
+        <div class="platform-status inactive"><span class="dot"></span>Скоро</div>
+      </div>
+    </div>
+    <div class="platform-stats">
+      <div><div class="platform-stat-value">—</div><div class="platform-stat-label">Источников</div></div>
+      <div><div class="platform-stat-value">—</div><div class="platform-stat-label">Постов</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- CHARTS ROW 1: Activity timeline + Platform distribution -->
+<div class="section-gap"></div>
+<div class="chart-row-1">
+  <div class="panel">
+    <div class="section-head">
+      <div>
+        <div class="section-title">Активность постов</div>
+        <div class="section-hint">Публикации за последние 7 дней</div>
+      </div>
+      <div class="chart-tabs">
+        <div class="chart-tab">24ч</div>
+        <div class="chart-tab active">7д</div>
+        <div class="chart-tab">30д</div>
+      </div>
+    </div>
+    <!-- Area chart -->
+    <svg viewBox="0 0 600 200" width="100%" height="220" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.4"/>
+          <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="areaGrad2" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.3"/>
+          <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <!-- Grid lines -->
+      <line x1="0" y1="40" x2="600" y2="40" stroke="#2a3550" stroke-width="1" stroke-dasharray="3,3"/>
+      <line x1="0" y1="90" x2="600" y2="90" stroke="#2a3550" stroke-width="1" stroke-dasharray="3,3"/>
+      <line x1="0" y1="140" x2="600" y2="140" stroke="#2a3550" stroke-width="1" stroke-dasharray="3,3"/>
+
+      <!-- Previous week (comparison, dimmed) -->
+      <path d="M0,120 L85,110 L170,130 L255,105 L340,115 L425,95 L510,100 L600,90 L600,200 L0,200 Z"
+        fill="url(#areaGrad2)"/>
+      <polyline points="0,120 85,110 170,130 255,105 340,115 425,95 510,100 600,90"
+        fill="none" stroke="#8b5cf6" stroke-width="2" stroke-dasharray="4,4" opacity="0.6"/>
+
+      <!-- Current week -->
+      <path d="M0,100 L85,85 L170,95 L255,60 L340,70 L425,40 L510,55 L600,30 L600,200 L0,200 Z"
+        fill="url(#areaGrad)"/>
+      <polyline points="0,100 85,85 170,95 255,60 340,70 425,40 510,55 600,30"
+        fill="none" stroke="#3b82f6" stroke-width="2.5"/>
+
+      <!-- Data points -->
+      <g fill="#3b82f6">
+        <circle cx="0" cy="100" r="3"/>
+        <circle cx="85" cy="85" r="3"/>
+        <circle cx="170" cy="95" r="3"/>
+        <circle cx="255" cy="60" r="3"/>
+        <circle cx="340" cy="70" r="3"/>
+        <circle cx="425" cy="40" r="3"/>
+        <circle cx="510" cy="55" r="3"/>
+        <circle cx="600" cy="30" r="4" fill="#fff" stroke="#3b82f6" stroke-width="2"/>
+      </g>
+    </svg>
+    <!-- X axis labels -->
+    <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); margin-top: 6px;">
+      <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span><span>Сегодня</span>
+    </div>
+    <div class="legend">
+      <div class="legend-item"><span class="legend-dot" style="background: #3b82f6;"></span>Эта неделя</div>
+      <div class="legend-item"><span class="legend-dot" style="background: #8b5cf6; opacity: 0.6;"></span>Прошлая неделя</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="section-head">
+      <div>
+        <div class="section-title">Распределение</div>
+        <div class="section-hint">Посты по платформам</div>
+      </div>
+    </div>
+    <!-- Donut -->
+    <svg viewBox="0 0 200 200" width="100%" height="200">
+      <!-- Background ring -->
+      <circle cx="100" cy="100" r="70" fill="none" stroke="#1f2a42" stroke-width="24"/>
+      <!-- Segments (using stroke-dasharray on circle) -->
+      <!-- Total circumference: 2*pi*70 ≈ 440 -->
+      <!-- TG: 55% = 242 -->
+      <!-- VK: 30% = 132 -->
+      <!-- YT: 15% = 66 -->
+      <circle cx="100" cy="100" r="70" fill="none" stroke="#26a5e4" stroke-width="24"
+        stroke-dasharray="242 440" stroke-dashoffset="0"
+        transform="rotate(-90 100 100)"/>
+      <circle cx="100" cy="100" r="70" fill="none" stroke="#0077ff" stroke-width="24"
+        stroke-dasharray="132 440" stroke-dashoffset="-242"
+        transform="rotate(-90 100 100)"/>
+      <circle cx="100" cy="100" r="70" fill="none" stroke="#ff0000" stroke-width="24"
+        stroke-dasharray="66 440" stroke-dashoffset="-374"
+        transform="rotate(-90 100 100)"/>
+    </svg>
+    <div class="donut-center">
+      <div class="donut-center-value">1 247</div>
+      <div class="donut-center-label">всего постов</div>
+    </div>
+    <div class="donut-legend">
+      <div class="donut-legend-row">
+        <div class="left"><span class="legend-dot" style="background: #26a5e4;"></span>Telegram</div>
+        <div><span class="value">687</span><span class="pct">55%</span></div>
+      </div>
+      <div class="donut-legend-row">
+        <div class="left"><span class="legend-dot" style="background: #0077ff;"></span>ВКонтакте</div>
+        <div><span class="value">432</span><span class="pct">35%</span></div>
+      </div>
+      <div class="donut-legend-row">
+        <div class="left"><span class="legend-dot" style="background: #ff0000;"></span>YouTube</div>
+        <div><span class="value">128</span><span class="pct">10%</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CHARTS ROW 2: Top sources + Heatmap -->
+<div class="section-gap"></div>
+<div class="chart-row-2">
+  <div class="panel">
+    <div class="section-head">
+      <div>
+        <div class="section-title">Топ источников</div>
+        <div class="section-hint">По количеству постов за неделю</div>
+      </div>
+      <div class="section-hint">7 дней</div>
+    </div>
+    <div class="top-source">
+      <div class="top-source-rank">1</div>
+      <div class="top-source-body">
+        <div class="top-source-name">Mash <span style="color: var(--text-muted); font-size: 11px;">· Telegram</span></div>
+        <div class="top-source-bar-wrap"><div class="top-source-bar" style="width: 100%;"></div></div>
+      </div>
+      <div class="top-source-value">184</div>
+    </div>
+    <div class="top-source">
+      <div class="top-source-rank">2</div>
+      <div class="top-source-body">
+        <div class="top-source-name">Лентач <span style="color: var(--text-muted); font-size: 11px;">· ВКонтакте</span></div>
+        <div class="top-source-bar-wrap"><div class="top-source-bar" style="width: 78%;"></div></div>
+      </div>
+      <div class="top-source-value">144</div>
+    </div>
+    <div class="top-source">
+      <div class="top-source-rank">3</div>
+      <div class="top-source-body">
+        <div class="top-source-name">RIA Новости <span style="color: var(--text-muted); font-size: 11px;">· Telegram</span></div>
+        <div class="top-source-bar-wrap"><div class="top-source-bar" style="width: 65%;"></div></div>
+      </div>
+      <div class="top-source-value">119</div>
+    </div>
+    <div class="top-source">
+      <div class="top-source-rank">4</div>
+      <div class="top-source-body">
+        <div class="top-source-name">Readovka <span style="color: var(--text-muted); font-size: 11px;">· Telegram</span></div>
+        <div class="top-source-bar-wrap"><div class="top-source-bar" style="width: 54%;"></div></div>
+      </div>
+      <div class="top-source-value">99</div>
+    </div>
+    <div class="top-source">
+      <div class="top-source-rank">5</div>
+      <div class="top-source-body">
+        <div class="top-source-name">Типичная Москва <span style="color: var(--text-muted); font-size: 11px;">· ВКонтакте</span></div>
+        <div class="top-source-bar-wrap"><div class="top-source-bar" style="width: 42%;"></div></div>
+      </div>
+      <div class="top-source-value">78</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="section-head">
+      <div>
+        <div class="section-title">Активность по времени</div>
+        <div class="section-hint">Когда источники публикуют</div>
+      </div>
+    </div>
+    <div class="heatmap-wrap">
+      <div class="heatmap-days">
+        <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span>
+      </div>
+      <div class="heatmap-grid" id="heatmap"></div>
+    </div>
+    <div style="display: flex; justify-content: space-between; font-size: 10px; color: var(--text-muted); margin-top: 4px; padding-left: 38px;">
+      <span>0</span><span>6</span><span>12</span><span>18</span><span>24</span>
+    </div>
+    <div class="heatmap-legend">
+      Меньше
+      <span class="heatmap-legend-cell" style="background: #1f2a42;"></span>
+      <span class="heatmap-legend-cell" style="background: #1e3a8a;"></span>
+      <span class="heatmap-legend-cell" style="background: #2563eb;"></span>
+      <span class="heatmap-legend-cell" style="background: #3b82f6;"></span>
+      <span class="heatmap-legend-cell" style="background: #60a5fa;"></span>
+      Больше
+    </div>
+  </div>
+</div>
+
+<!-- CHARTS ROW 3: Feed + Keywords -->
+<div class="section-gap"></div>
+<div class="chart-row-3">
+  <div class="panel">
+    <div class="section-head">
+      <div>
+        <div class="section-title">Последние публикации</div>
+        <div class="section-hint">Все источники · в реальном времени</div>
+      </div>
+      <div class="section-hint">Показать все →</div>
+    </div>
+    <div class="feed-item">
+      <div class="feed-avatar">VK</div>
+      <div class="feed-body">
+        <div class="feed-meta"><strong>Лентач</strong> · 12 мин. назад</div>
+        <div class="feed-text">В Москве сегодня открылась новая станция метро «Потапово». Очередь на вход растянулась на полкилометра — жители Новой Москвы ждали этого момента больше 5 лет.</div>
+        <div class="feed-engagement">
+          <span>👁 12.4K</span><span>❤ 847</span><span>💬 92</span><span>↗ 34</span>
+        </div>
+      </div>
+    </div>
+    <div class="feed-item">
+      <div class="feed-avatar">TG</div>
+      <div class="feed-body">
+        <div class="feed-meta"><strong>Mash</strong> · 34 мин. назад</div>
+        <div class="feed-text">Источник: по предварительной информации, задержан подозреваемый по делу о хищении. Подробности уточняются.</div>
+        <div class="feed-engagement">
+          <span>👁 48.2K</span><span>❤ 1.2K</span><span>💬 234</span>
+        </div>
+      </div>
+    </div>
+    <div class="feed-item">
+      <div class="feed-avatar">YT</div>
+      <div class="feed-body">
+        <div class="feed-meta"><strong>вДудь</strong> · 2 ч. назад</div>
+        <div class="feed-text">Новое интервью: разговор с известным предпринимателем о том, как начать свой бизнес в текущих реалиях.</div>
+        <div class="feed-engagement">
+          <span>👁 892K</span><span>❤ 24K</span><span>💬 3.4K</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="section-head">
+      <div>
+        <div class="section-title">Ключевые слова</div>
+        <div class="section-hint">За последние 24 часа</div>
+      </div>
+    </div>
+    <div>
+      <span class="keyword-tag trending">Москва <strong>47</strong></span>
+      <span class="keyword-tag">выборы <strong>32</strong></span>
+      <span class="keyword-tag trending">IT <strong>28</strong></span>
+      <span class="keyword-tag">экономика <strong>19</strong></span>
+      <span class="keyword-tag">спорт <strong>14</strong></span>
+      <span class="keyword-tag trending">ИИ <strong>13</strong></span>
+      <span class="keyword-tag">технологии <strong>12</strong></span>
+      <span class="keyword-tag">метро <strong>9</strong></span>
+    </div>
+    <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border);">
+      <div class="section-hint" style="margin-bottom: 8px;">↑ Растут быстрее всего</div>
+      <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.8;">
+        <div>• <strong style="color: var(--text-primary);">ИИ</strong> — +320% за сутки</div>
+        <div>• <strong style="color: var(--text-primary);">метро</strong> — +180%</div>
+        <div>• <strong style="color: var(--text-primary);">Москва</strong> — +85%</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Generate heatmap
+  const grid = document.getElementById('heatmap');
+  const pattern = [
+    // 7 days x 24 hours, 0-4 intensity
+    [0,0,0,0,0,0,1,2,3,3,2,2,3,3,3,4,4,3,3,2,2,1,1,0],
+    [0,0,0,0,0,0,1,2,3,3,3,2,3,3,4,4,4,3,2,2,1,1,0,0],
+    [0,0,0,0,0,0,1,2,3,4,3,3,3,3,4,4,4,4,3,2,1,1,0,0],
+    [0,0,0,0,0,0,1,2,3,3,3,2,2,3,3,4,4,3,3,2,1,1,0,0],
+    [0,0,0,0,0,0,1,2,3,3,3,3,3,3,4,4,4,3,2,2,1,1,0,0],
+    [0,0,0,0,0,0,0,1,2,2,2,2,2,3,3,3,3,2,2,1,1,0,0,0],
+    [0,0,0,0,0,0,0,1,1,2,2,2,2,2,2,3,3,2,2,1,1,0,0,0],
+  ];
+  const colors = ['#1f2a42','#1e3a8a','#2563eb','#3b82f6','#60a5fa'];
+  for (let d = 0; d < 7; d++) {
+    for (let h = 0; h < 24; h++) {
+      const cell = document.createElement('div');
+      cell.className = 'heatmap-cell';
+      cell.style.background = colors[pattern[d][h]];
+      grid.appendChild(cell);
+    }
+  }
+</script>
+
+</body>
+</html>

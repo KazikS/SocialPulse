@@ -7,6 +7,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
       ipcRenderer.invoke("platforms:create", data),
     getById: (id: number) => ipcRenderer.invoke("platforms:getById", id),
     deleteById: (id: number) => ipcRenderer.invoke("platforms:deleteById", id),
+    getOverview: () => ipcRenderer.invoke("platforms:getOverview"),
   },
   posts: {
     getAll: () => ipcRenderer.invoke("posts:getAll"),
