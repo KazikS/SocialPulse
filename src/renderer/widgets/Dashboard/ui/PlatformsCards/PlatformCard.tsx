@@ -11,6 +11,7 @@ import {
   StatusIndicatorVariant,
 } from "@/shared/ui/StatusIndicator";
 
+import { pluralize } from "../../lib/pluralize";
 import styles from "./PlatformCard.module.scss";
 
 export type PlatformStatus = "active" | "soon";
@@ -65,11 +66,13 @@ export const PlatformCard = ({
       <div className={styles.stats}>
         <div className={styles.statsBlock}>
           {sourcesCount > 0 ? sourcesCount : "-"}
-          <span>источников</span>
+          <span>
+            {pluralize(sourcesCount, ["источник", "источника", "источников"])}
+          </span>
         </div>
         <div className={styles.statsBlock}>
           {postsCount ? postsCount : "-"}
-          <span>постов</span>
+          <span>{pluralize(postsCount, ["пост", "поста", "постов"])}</span>
         </div>
       </div>
     </Card>

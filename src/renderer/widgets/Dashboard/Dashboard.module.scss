@@ -1,38 +1,7 @@
 @use "@/styles/variables" as *;
 
-.platformsList {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-
-  @media (max-width: 1024px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  @media (max-width: 840px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-.platforms {
+.wrapper {
   display: flex;
   flex-direction: column;
   padding: 20px;
-}
-
-.blockTitle {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  text-wrap: none;
-  margin-bottom: 12px;
-}
-
-.title {
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.hint {
-  font-size: 1px;
-  color: $text-muted;
 }

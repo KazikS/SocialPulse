@@ -4,7 +4,7 @@ import { ReactNode } from "react";
 import { TgLogo, VkLogo, YouTubeIcon } from "@/shared/ui/Icons";
 import { MaxIcon } from "@/shared/ui/Icons/MaxIcon";
 
-import { PlatformStatus } from "./ui/PlatformCard";
+import { PlatformStatus } from "./ui/PlatformsCards/PlatformCard";
 
 export type PlatformPresentation = {
   icon: ReactNode;

@@ -1,10 +1,10 @@
-import { Source } from "@shared/types/entites";
+import { PlatformSlug, Source } from "@shared/types/entites";
 
 import { PlatformsRepository } from "../repositories";
 import { SourcesRepository } from "../repositories/sources.repo";
 
 type MockSource = {
-  platformSlug: string;
+  platformSlug: PlatformSlug;
   external_id: string;
   name: string;
   url: string;
