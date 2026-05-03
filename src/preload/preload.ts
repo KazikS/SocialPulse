@@ -25,6 +25,8 @@ contextBridge.exposeInMainWorld("electronAPI", {
     getStats: (postId: number) => ipcRenderer.invoke("posts:getStats", postId),
     addStats: (data: Record<string, unknown>) =>
       ipcRenderer.invoke("posts:addStats", data),
+    getAllByDate: (date: string) =>
+      ipcRenderer.invoke("posts:getAllByDate", date),
   },
   sources: {
     getAll: () => ipcRenderer.invoke("sources:getAll"),

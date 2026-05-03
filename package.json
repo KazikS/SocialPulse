@@ -53,11 +53,13 @@
   "dependencies": {
     "better-sqlite3": "^12.8.0",
     "clsx": "^2.1.1",
+    "dayjs": "^1.11.20",
     "electron-squirrel-startup": "^1.0.1",
     "framer-motion": "^12.38.0",
     "motion": "^12.38.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
-    "react-router-dom": "^7.14.0"
+    "react-router-dom": "^7.14.0",
+    "recharts": "^3.8.1"
   }
 }

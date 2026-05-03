@@ -48,9 +48,14 @@ const handleGetStats = (_event: IpcMainInvokeEvent, postId: number) => {
   return getRepo().getStats(postId);
 };
 
+const handleGetAllByDate = (_event: IpcMainInvokeEvent, date: string) => {
+  return getRepo().getAllByDate(date);
+};
+
 ipcMain.handle("posts:addMedia", handleAddMedia);
 ipcMain.handle("posts:getMedia", handleGetMedia);
 ipcMain.handle("posts:addComment", handleAddComment);
 ipcMain.handle("posts:getComments", handleGetComments);
 ipcMain.handle("posts:getStats", handleGetStats);
 ipcMain.handle("posts:addStats", handleAddStats);
+ipcMain.handle("posts:getAllByDate", handleGetAllByDate);

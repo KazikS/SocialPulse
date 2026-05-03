@@ -1,6 +1,7 @@
 import {
   Platform,
   Post,
+  PostByPlatform,
   PostComment,
   PostMedia,
   PostStats,
@@ -32,6 +33,7 @@ declare global {
       getComments: (postId: number) => Promise<PostComment[]>;
       getStats: (postId: number) => Promise<PostStats[]>;
       addStats: (data: Record<string, unknown>) => Promise<unknown>;
+      getAllByDate: (date: string) => Promise<PostByPlatform[]>;
     };
     sources: {
       getAll: () => Promise<Source[]>;

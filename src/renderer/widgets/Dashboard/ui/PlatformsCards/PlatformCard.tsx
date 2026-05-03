@@ -11,7 +11,7 @@ import {
   StatusIndicatorVariant,
 } from "@/shared/ui/StatusIndicator";
 
-import { pluralize } from "../../lib/pluralize";
+import { pluralize } from "../../lib/utils";
 import styles from "./PlatformCard.module.scss";
 
 export type PlatformStatus = "active" | "soon";

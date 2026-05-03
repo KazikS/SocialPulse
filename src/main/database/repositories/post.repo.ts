@@ -18,6 +18,15 @@ export class PostRepository extends BaseRepository<Post> {
     return this.database.prepare(sql).all(sourceId);
   }
 
+  getAllByDate(date: string) {
+    const sql = `SELECT posts.*, platforms.slug
+    FROM posts
+    JOIN sources ON posts.source_id = sources.id
+    JOIN platforms ON sources.platform_id = platforms.id
+    WHERE posts.published_at >= ?`;
+    return this.database.prepare(sql).all(date);
+  }
+
   getFullPost(id: number): FullPost | undefined {
     const post = this.findById(id);
     if (!post) return undefined;

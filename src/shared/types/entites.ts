@@ -37,6 +37,10 @@ export interface Post {
   created_at: string;
 }
 
+export type PostByPlatform = {
+  slug: PlatformSlug;
+} & Post;
+
 export interface PostMedia {
   id: number;
   post_id: number;

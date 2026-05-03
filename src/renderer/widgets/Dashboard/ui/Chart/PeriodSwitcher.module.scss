@@ -1,0 +1,32 @@
+@use "@/styles/variables" as *;
+
+.wrapper {
+  width: fit-content;
+  background: $bg-primary;
+  display: flex;
+  border-radius: 12px;
+  gap: 4px;
+}
+
+.variant {
+  padding: 8px 16px;
+  min-width: 80px;
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition:
+    background 0.2s,
+    color 0.2s;
+
+  &:hover {
+    color: #fff;
+  }
+}
+
+.active {
+  background: $bg-card-hover;
+  color: #fff;
+}

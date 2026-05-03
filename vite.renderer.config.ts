@@ -8,4 +8,7 @@ export default defineConfig({
       "@": path.resolve(__dirname, "src/renderer"),
     },
   },
+  optimizeDeps: {
+    include: ["dayjs/locale/ru"],
+  },
 });

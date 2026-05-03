@@ -22,25 +22,26 @@ const randomBetween = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min + 1)) + min;
 
 const randomDate = (daysBack: number) => {
-  const now = Date.now();
-  const offset = randomBetween(0, daysBack * 24 * 60 * 60 * 1000);
-  return new Date(now - offset).toISOString();
+  const date = new Date();
+  date.setDate(date.getDate() - randomBetween(0, daysBack - 1));
+  date.setHours(randomBetween(7, 22), randomBetween(0, 59), 0, 0);
+  return date.toISOString();
 };
 
 export const createMockPostsSeed = () => {
   const sourcesRepo = new SourcesRepository();
   const postsRepo = new PostRepository();
-
+  
   if (postsRepo.findAll().length > 0) return;
 
   const sources = sourcesRepo.findAll();
   if (sources.length === 0) return;
 
   sources.forEach((source) => {
-    const postsCount = randomBetween(3, 15);
+    const postsCount = randomBetween(10, 15);
 
     for (let i = 0; i < postsCount; i++) {
-      const publishedAt = randomDate(7);
+      const publishedAt = randomDate(180);
 
       const post: Omit<Post, "id"> = {
         source_id: source.id,
