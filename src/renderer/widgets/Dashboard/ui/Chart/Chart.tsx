@@ -1,5 +1,4 @@
 import { PlatformSlug } from "@shared/types/entites";
-import { useState } from "react";
 import {
   Area,
   AreaChart,
@@ -13,15 +12,15 @@ import {
 import { usePlatforms } from "@/shared/store/platforms/usePlatforms";
 import { Card } from "@/shared/ui/Card";
 import { SkeletonCard } from "@/shared/ui/SkeletonCard";
+import { useDashboardFilters } from "@/store/store";
 
 import { platformColorsBySlug } from "../../config";
 import { usePrepareChartData } from "../../hooks/usePrepareChartData";
-import { PeriodVariants } from "../../lib/types";
 import styles from "./Chart.module.scss";
 import { PeriodSwitcher } from "./PeriodSwitcher";
 
 export const Chart = () => {
-  const [period, setPeriod] = useState<PeriodVariants>("halfYear");
+  const { period, setPeriod } = useDashboardFilters();
   const { formattedData, isLoading } = usePrepareChartData(period);
 
   const { platforms } = usePlatforms();
@@ -81,7 +80,7 @@ export const Chart = () => {
                 stroke={platformColorsBySlug[slug]}
               />
             ))}
-            <Legend formatter={getNamesBySlug} iconSize={0}/>
+            <Legend formatter={getNamesBySlug} iconSize={0} />
           </AreaChart>
         </ResponsiveContainer>
       </Card>

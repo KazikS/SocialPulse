@@ -1,6 +1,7 @@
 import styles from "./Dashboard.module.scss";
 import { Chart } from "./ui/Chart/Chart";
 import { PlatformCardRow } from "./ui/PlatformsCards/PlatformCardRow";
+import { TopSources } from "./ui/TopSources/TopSources";
 
 export const Dashboard = () => {
   return (
@@ -8,7 +9,7 @@ export const Dashboard = () => {
       <PlatformCardRow />
       <div className={styles.statsBlock}>
         <Chart />
-        <div></div>
+        <TopSources />
       </div>
     </div>
   );

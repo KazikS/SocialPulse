@@ -1,0 +1,23 @@
+@use "@/styles/variables" as *;
+.wrapper {
+  display: flex;
+  gap: 8px;
+  padding: 8px 0px;
+  border-top: 1px solid $border;
+  border-bottom: 1px solid $border;
+}
+.logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+}
+
+.title {
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.stats {
+  font-size: 11px;
+  color: $text-secondary;
+}
