@@ -1,10 +1,10 @@
 import "dayjs/locale/ru";
 
 import { PostByPlatform } from "@shared/types/entites";
-import dayjs from "dayjs";
 import { useEffect, useMemo, useState } from "react";
 
 import { api } from "@/shared/api";
+import { getPreviousPeriodRange } from "@/shared/lib/periods";
 import { usePlatforms } from "@/shared/store/platforms/usePlatforms";
 
 import { PeriodVariants } from "../lib/types";
@@ -13,25 +13,27 @@ import { buildChartData } from "../lib/utils";
 export const usePrepareChartData = (period: PeriodVariants = "month") => {
   const { platforms } = usePlatforms();
   const [data, setData] = useState<PostByPlatform[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const dateSince = useMemo(
-    () => dayjs().subtract(6, "month").startOf("month").toISOString(),
-    [],
-  );
+  const { start, end } = getPreviousPeriodRange(period);
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await api.posts.getAllByDate(dateSince);
+      setIsLoading(true);
+      const response = await api.posts.getInRange(start, end);
       setData(response);
+      setIsLoading(false);
     };
 
     fetchData();
-  }, [dateSince]);
+  }, [start, end]);
 
   const formattedData = useMemo(
     () => buildChartData(data, period, platforms),
     [data, period, platforms],
   );
 
-  return { formattedData, isLoading: data.length === 0 };
+  const isEmpty = data.length === 0;
+
+  return { formattedData, isLoading, isEmpty };
 };

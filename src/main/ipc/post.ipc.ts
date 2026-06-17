@@ -52,6 +52,14 @@ const handleGetAllByDate = (_event: IpcMainInvokeEvent, date: string) => {
   return getRepo().getAllByDate(date);
 };
 
+const handleGetInRange = (
+  _event: IpcMainInvokeEvent,
+  start: string,
+  end: string,
+) => {
+  return getRepo().getInRange(start, end);
+};
+
 ipcMain.handle("posts:addMedia", handleAddMedia);
 ipcMain.handle("posts:getMedia", handleGetMedia);
 ipcMain.handle("posts:addComment", handleAddComment);
@@ -59,3 +67,4 @@ ipcMain.handle("posts:getComments", handleGetComments);
 ipcMain.handle("posts:getStats", handleGetStats);
 ipcMain.handle("posts:addStats", handleAddStats);
 ipcMain.handle("posts:getAllByDate", handleGetAllByDate);
+ipcMain.handle("posts:getInRange", handleGetInRange);

@@ -7,10 +7,10 @@ export const Dashboard = () => {
   return (
     <div className={styles.wrapper}>
       <PlatformCardRow />
-      <div className={styles.statsBlock}>
+      <section className={styles.statsBlock}>
         <Chart />
         <TopSources />
-      </div>
+      </section>
     </div>
   );
 };

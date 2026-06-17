@@ -34,6 +34,7 @@ declare global {
       getStats: (postId: number) => Promise<PostStats[]>;
       addStats: (data: Record<string, unknown>) => Promise<unknown>;
       getAllByDate: (date: string) => Promise<PostByPlatform[]>;
+      getInRange: (start: string, end: string) => Promise<PostByPlatform[]>;
     };
     sources: {
       getAll: () => Promise<Source[]>;

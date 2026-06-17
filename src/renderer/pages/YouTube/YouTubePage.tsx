@@ -6,7 +6,7 @@ export const YouTubePage = () => {
         onClick={async () => {
           const response = await window.electronAPI.platforms.create({
             name: "YouTube",
-            slug: "YT",
+            slug: "yt",
           });
           console.log(response);
         }}

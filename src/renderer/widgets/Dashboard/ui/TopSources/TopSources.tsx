@@ -3,7 +3,6 @@ import { Card } from "@/shared/ui/Card";
 import { useFilteredSources } from "../../hooks/useFilteredSources";
 import { SourceCard } from "./SourceCard";
 import styles from "./TopSources.module.scss";
-import { source } from "framer-motion/client";
 
 export const TopSources = () => {
   const sources = useFilteredSources();

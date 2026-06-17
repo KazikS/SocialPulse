@@ -62,4 +62,13 @@ export class PostRepository extends BaseRepository<Post> {
   getStats(postId: number) {
     return this.getFrom("post_stats", "post_id", postId);
   }
+
+  getInRange(start: string, end: string) {
+    const sql = `SELECT posts.*, platforms.slug
+    FROM posts
+    JOIN sources ON posts.source_id = sources.id
+    JOIN platforms ON sources.platform_id = platforms.id
+    WHERE posts.published_at >= ? AND posts.published_at <= ?`;
+    return this.database.prepare(sql).all(start, end);
+  }
 }

@@ -21,9 +21,15 @@ const sampleTexts = [
 const randomBetween = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min + 1)) + min;
 
-const randomDate = (daysBack: number) => {
+// сколько дней назад начинаем генерировать (чуть больше полугода)
+const DAYS_BACK = 190;
+// вероятность, что в конкретный день у источника был хотя бы один пост
+const POST_DAY_PROBABILITY = 0.5;
+
+// дата N дней назад со случайным «дневным» временем
+const dateNDaysAgo = (daysAgo: number) => {
   const date = new Date();
-  date.setDate(date.getDate() - randomBetween(0, daysBack - 1));
+  date.setDate(date.getDate() - daysAgo);
   date.setHours(randomBetween(7, 22), randomBetween(0, 59), 0, 0);
   return date.toISOString();
 };
@@ -31,27 +37,32 @@ const randomDate = (daysBack: number) => {
 export const createMockPostsSeed = () => {
   const sourcesRepo = new SourcesRepository();
   const postsRepo = new PostRepository();
-  
+
   if (postsRepo.findAll().length > 0) return;
 
   const sources = sourcesRepo.findAll();
   if (sources.length === 0) return;
 
   sources.forEach((source) => {
-    const postsCount = randomBetween(10, 15);
+    // идём по каждому дню за последние полгода
+    for (let daysAgo = 0; daysAgo < DAYS_BACK; daysAgo++) {
+      // в часть дней постов не было — пропускаем
+      if (Math.random() > POST_DAY_PROBABILITY) continue;
 
-    for (let i = 0; i < postsCount; i++) {
-      const publishedAt = randomDate(180);
+      // в «активный» день — от 1 до 3 публикаций
+      const postsThisDay = randomBetween(1, 3);
 
-      const post: Omit<Post, "id"> = {
-        source_id: source.id,
-        external_id: `${source.id}_${i}_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
-        text: sampleTexts[randomBetween(0, sampleTexts.length - 1)],
-        published_at: publishedAt,
-        created_at: new Date().toISOString(),
-      };
+      for (let i = 0; i < postsThisDay; i++) {
+        const post: Omit<Post, "id"> = {
+          source_id: source.id,
+          external_id: `${source.id}_${daysAgo}_${i}_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+          text: sampleTexts[randomBetween(0, sampleTexts.length - 1)],
+          published_at: dateNDaysAgo(daysAgo),
+          created_at: new Date().toISOString(),
+        };
 
-      postsRepo.create(post);
+        postsRepo.create(post);
+      }
     }
   });
 };

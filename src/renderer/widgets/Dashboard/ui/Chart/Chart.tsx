@@ -21,8 +21,7 @@ import { PeriodSwitcher } from "./PeriodSwitcher";
 
 export const Chart = () => {
   const { period, setPeriod } = useDashboardFilters();
-  const { formattedData, isLoading } = usePrepareChartData(period);
-
+  const { formattedData, isLoading, isEmpty } = usePrepareChartData(period);
   const { platforms } = usePlatforms();
 
   const slugs = platforms.map((platform) => platform.slug);
@@ -37,6 +36,33 @@ export const Chart = () => {
 
   const monthTicks =
     period === "month" ? ["1", "5", "10", "15", "20", "25", "30"] : undefined;
+
+  if (!isLoading && isEmpty) {
+    return (
+      <div className={styles.blockWrapper}>
+        <Card className={styles.wrapper}>
+          <div className={styles.cardHeader}>
+            <div className={styles.title}>
+              <h3>Динамика публикаций</h3>
+              <p>По платформам</p>
+            </div>
+            <PeriodSwitcher
+              value={period}
+              onChange={setPeriod}
+              options={[
+                { value: "week", label: "Неделя" },
+                { value: "month", label: "Месяц" },
+                { value: "halfYear", label: "Полгода" },
+              ]}
+            />
+          </div>
+          <div>
+            <p>за данный промежуток времени активности не было</p>
+          </div>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.blockWrapper}>
