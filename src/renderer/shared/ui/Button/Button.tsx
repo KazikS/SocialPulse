@@ -5,11 +5,17 @@ import styles from "./Button.module.scss";
 
 type ButtonProps = {
   children: ReactNode;
-  variant: "solid" | "ghost" | "outline";
+  variant?: "solid" | "ghost" | "outline";
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
-export const Button = ({ children, variant = "solid" }: ButtonProps) => {
+export const Button = ({
+  children,
+  variant = "solid",
+  ...rest
+}: ButtonProps) => {
   return (
-    <button className={clsx(styles.button, styles[variant])}>{children}</button>
+    <button className={clsx(styles.button, styles[variant])} {...rest}>
+      {children}
+    </button>
   );
 };

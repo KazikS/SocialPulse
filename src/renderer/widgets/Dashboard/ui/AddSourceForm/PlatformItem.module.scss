@@ -1,0 +1,33 @@
+@use "@/styles/variables" as *;
+
+.wrapper {
+  background-color: $bg-secondary;
+  display: flex;
+  gap: 8px;
+  padding: 8px 12px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  border: 1px solid $border;
+  font-weight: 300;
+  color: $text-secondary;
+  cursor: pointer;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.active {
+  background-color: #233056;
+  border-color: #3a5bbf;
+  color: $text-primary;
+}
+
+.name {
+  user-select: none;
+}

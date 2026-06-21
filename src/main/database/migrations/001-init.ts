@@ -12,6 +12,7 @@ platform_id INTEGER,
 external_id TEXT,
 name TEXT,
 url TEXT,
+icon_path TEXT,
 created_at TEXT,
 FOREIGN KEY (platform_id) REFERENCES platforms(id));
 

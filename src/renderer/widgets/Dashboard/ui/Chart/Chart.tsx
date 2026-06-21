@@ -12,7 +12,7 @@ import {
 import { usePlatforms } from "@/shared/store/platforms/usePlatforms";
 import { Card } from "@/shared/ui/Card";
 import { SkeletonCard } from "@/shared/ui/SkeletonCard";
-import { useDashboardFilters } from "@/store/store";
+import { useDashboardFilters } from "@/shared/store/store";
 
 import { platformColorsBySlug } from "../../config";
 import { usePrepareChartData } from "../../hooks/usePrepareChartData";

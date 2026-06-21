@@ -14,4 +14,9 @@ export class SourcesRepository extends BaseRepository<Source> {
   getStats(sourceId: number) {
     return this.getFrom("source_stats", "source_id", sourceId);
   }
+
+  updateIconPath(id: number, iconPath: string) {
+    const sql = `UPDATE sources SET icon_path = ? WHERE id = ?`;
+    return this.database.prepare(sql).run(iconPath, id);
+  }
 }

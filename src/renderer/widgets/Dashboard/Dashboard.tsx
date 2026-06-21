@@ -1,4 +1,5 @@
 import styles from "./Dashboard.module.scss";
+import { AddSourceForm } from "./ui/AddSourceForm";
 import { Chart } from "./ui/Chart/Chart";
 import { PlatformCardRow } from "./ui/PlatformsCards/PlatformCardRow";
 import { TopSources } from "./ui/TopSources/TopSources";
@@ -10,6 +11,7 @@ export const Dashboard = () => {
       <section className={styles.statsBlock}>
         <Chart />
         <TopSources />
+        <AddSourceForm />
       </section>
     </div>
   );

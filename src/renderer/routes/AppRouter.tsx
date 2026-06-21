@@ -6,6 +6,7 @@ import { VkPage } from "@/pages/Vk";
 import { YouTubePage } from "@/pages/YouTube";
 import { routes } from "@/shared/routes";
 import { Layout } from "@/shared/ui/Layout";
+import { AddSourceButton } from "@/widgets/Dashboard/ui/AddSourceForm";
 
 const router = createHashRouter([
   {
@@ -14,7 +15,10 @@ const router = createHashRouter([
       {
         path: routes.home,
         element: <DashboardPage />,
-        handle: { title: "Дашборд" },
+        handle: {
+          title: "Дашборд",
+          controls: <AddSourceButton />,
+        },
       },
       {
         path: routes.tg,

@@ -1,6 +1,6 @@
 import { Platform } from "@shared/types/entites";
 
-import { PlatformsRepository } from "../repositories";
+import { platformRepo } from "../repositories";
 
 const basePlatforms: Omit<Platform, "id">[] = [
   {
@@ -22,9 +22,7 @@ const basePlatforms: Omit<Platform, "id">[] = [
 ];
 
 export const createPlatformSeed = () => {
-  const repo = new PlatformsRepository();
-
   basePlatforms.forEach((platform) => {
-    repo.createOrIgnore(platform);
+    platformRepo.createOrIgnore(platform);
   });
 };

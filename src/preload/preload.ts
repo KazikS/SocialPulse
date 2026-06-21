@@ -40,6 +40,8 @@ contextBridge.exposeInMainWorld("electronAPI", {
       ipcRenderer.invoke("sources:getStats", sourceId),
     addStats: (data: Record<string, unknown>) =>
       ipcRenderer.invoke("sources:addStats", data),
+    addIcon: (data: Record<string, unknown>) =>
+      ipcRenderer.invoke("sources:addIcon", data),
   },
   db: {
     test: () => ipcRenderer.invoke("db:test"),

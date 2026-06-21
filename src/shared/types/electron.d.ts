@@ -43,6 +43,7 @@ declare global {
       deleteById: (id: number) => Promise<unknown>;
       getStats: (sourceId: number) => Promise<SourceStats[]>;
       addStats: (data: Record<string, unknown>) => Promise<unknown>;
+      addIcon: (data: Record<string, unknown>) => Promise<unknown>;
     };
     db: {
       test: () => Promise<{ name: string }[]>;

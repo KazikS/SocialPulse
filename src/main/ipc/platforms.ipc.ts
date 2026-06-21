@@ -1,17 +1,8 @@
-import { PlatformsRepository } from "@main/database/repositories";
+import { platformRepo } from "@main/database/repositories";
 import { ipcMain } from "electron";
 
 import { registerCRUD } from "./lib/registerCRUD";
 
-let repo: PlatformsRepository;
+registerCRUD("platforms", platformRepo);
 
-const getRepo = () => {
-  if (!repo) {
-    repo = new PlatformsRepository();
-  }
-  return repo;
-};
-
-registerCRUD("platforms", getRepo);
-
-ipcMain.handle("platforms:getOverview", () => getRepo().getOverview());
+ipcMain.handle("platforms:getOverview", () => platformRepo.getOverview());

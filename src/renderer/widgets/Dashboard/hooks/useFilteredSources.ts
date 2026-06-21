@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { api } from "@/shared/api";
 import { getPreviousPeriodRange } from "@/shared/lib/periods";
-import { useDashboardFilters } from "@/store/store";
+import { useDashboardFilters } from "@/shared/store/store";
 
 export const useFilteredSources = () => {
   const [sources, setSources] = useState<Source[] | null>();

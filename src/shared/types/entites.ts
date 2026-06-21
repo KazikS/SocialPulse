@@ -25,6 +25,7 @@ export interface Source {
   external_id: string;
   name: string;
   url: string;
+  icon_path: string;
   created_at: string;
 }
 

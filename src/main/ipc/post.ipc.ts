@@ -1,55 +1,46 @@
-import { PostRepository } from "@main/database/repositories";
+import { postRepo } from "@main/database/repositories";
 import { PostComment, PostMedia, PostStats } from "@shared/types/entites";
 import { ipcMain, IpcMainInvokeEvent } from "electron";
 
 import { registerCRUD } from "./lib/registerCRUD";
 
-let repo: PostRepository;
-
-const getRepo = () => {
-  if (!repo) {
-    repo = new PostRepository();
-  }
-  return repo;
-};
-
-registerCRUD("posts", getRepo);
+registerCRUD("posts", postRepo);
 
 const handleAddMedia = (
   _event: IpcMainInvokeEvent,
   data: Omit<PostMedia, "id">,
 ) => {
-  return getRepo().addMedia(data);
+  return postRepo.addMedia(data);
 };
 
 const handleGetMedia = (_event: IpcMainInvokeEvent, postId: number) => {
-  return getRepo().getMedia(postId);
+  return postRepo.getMedia(postId);
 };
 
 const handleAddComment = (
   _event: IpcMainInvokeEvent,
   data: Omit<PostComment, "id">,
 ) => {
-  return getRepo().addComment(data);
+  return postRepo.addComment(data);
 };
 
 const handleGetComments = (_event: IpcMainInvokeEvent, postId: number) => {
-  return getRepo().getComment(postId);
+  return postRepo.getComment(postId);
 };
 
 const handleAddStats = (
   _event: IpcMainInvokeEvent,
   data: Omit<PostStats, "id">,
 ) => {
-  return getRepo().addStats(data);
+  return postRepo.addStats(data);
 };
 
 const handleGetStats = (_event: IpcMainInvokeEvent, postId: number) => {
-  return getRepo().getStats(postId);
+  return postRepo.getStats(postId);
 };
 
 const handleGetAllByDate = (_event: IpcMainInvokeEvent, date: string) => {
-  return getRepo().getAllByDate(date);
+  return postRepo.getAllByDate(date);
 };
 
 const handleGetInRange = (
@@ -57,7 +48,7 @@ const handleGetInRange = (
   start: string,
   end: string,
 ) => {
-  return getRepo().getInRange(start, end);
+  return postRepo.getInRange(start, end);
 };
 
 ipcMain.handle("posts:addMedia", handleAddMedia);

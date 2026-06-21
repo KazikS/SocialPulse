@@ -6,7 +6,7 @@
   "main": ".vite/build/main.js",
   "private": true,
   "scripts": {
-    "start": "electron-forge start",
+    "start": "tsc --noEmit && electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
@@ -62,6 +62,7 @@
     "react-dom": "^19.2.5",
     "react-router-dom": "^7.14.0",
     "recharts": "^3.8.1",
+    "sharp": "^0.35.1",
     "zustand": "^5.0.14"
   }
 }

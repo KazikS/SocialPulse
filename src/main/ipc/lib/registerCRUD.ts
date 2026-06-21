@@ -1,38 +1,29 @@
 import { BaseRepository } from "@main/database/repositories";
 import { ipcMain, IpcMainInvokeEvent } from "electron";
 
-export const registerCRUD = <T>(
-  name: string,
-  createRepo: () => BaseRepository<T>,
-) => {
-  let repo: BaseRepository<T>;
-  const getRepo = () => {
-    if (!repo) repo = createRepo();
-    return repo;
-  };
-
+export const registerCRUD = <T>(name: string, repo: BaseRepository<T>) => {
   ipcMain.handle(`${name}:getAll`, () => {
-    return getRepo().findAll();
+    return repo.findAll();
   });
 
   ipcMain.handle(
     `${name}:create`,
     (_event: IpcMainInvokeEvent, data: Omit<T, "id">) => {
-      return getRepo().create(data);
+      return repo.create(data);
     },
   );
 
   ipcMain.handle(
     `${name}:getById`,
     (_event: IpcMainInvokeEvent, id: number) => {
-      return getRepo().findById(id);
+      return repo.findById(id);
     },
   );
 
   ipcMain.handle(
     `${name}:deleteById`,
     (_event: IpcMainInvokeEvent, id: number) => {
-      return getRepo().deleteById(id);
+      return repo.deleteById(id);
     },
   );
 };
